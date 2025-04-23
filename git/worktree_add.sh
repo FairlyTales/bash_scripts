@@ -14,6 +14,7 @@ fi
 
 cp ../.env.auth ./.env.auth
 cp ../.env.local ./.env.local
+cp ../.cursorrules ./.cursorrules
 
 DIRNAME=$(dirname "$0")
 $DIRNAME/../ide/launch_current_ide_in_pwd.sh

@@ -14,3 +14,4 @@ fi
 
 cp ../.env.auth ./.env.auth
 cp ../.env.local ./.env.local
+cp ../.cursorrules ./.cursorrules

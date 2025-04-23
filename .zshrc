@@ -187,6 +187,9 @@ alias с='code ./' # кириллическая
 # Cursor
 alias cr='cursor ./'
 
+# launch local browser tools server for browser tools MCP
+alias bt='npx @agentdeskai/browser-tools-server@1.2.0'
+
 # XCode
 alias xcode='open -a Xcode'
 alias xc='xcode'
