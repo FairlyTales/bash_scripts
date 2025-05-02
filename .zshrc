@@ -134,6 +134,9 @@ alias rc="rush change"
 
 # open .zshrc and bash_script directory in VSCode
 alias z="code /Users/user/bash_scripts && code -a /Users/user/.zshrc"
+alias csettings="code /Users/user/Documents/Settings/ide/vs_code,\ cursor"
+alias cs="csettings"
+
 
 # get list of all active ports
 alias ports="lsof -i -n -P"
@@ -186,6 +189,7 @@ alias с='code ./' # кириллическая
 
 # Cursor
 alias cr='cursor ./'
+alias cc='cursor ./'
 
 # launch local browser tools server for browser tools MCP
 alias bt='npx @agentdeskai/browser-tools-server@1.2.0'
