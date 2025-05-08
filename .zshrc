@@ -224,7 +224,7 @@ alias gps="git push"
 alias gpsn="$GIT_SCRIPTS_PATH/push_new_branch.sh"
 alias gpsf="git push -f"
 alias gpswip="gpsf && grst && ga"
-alias grst="git reset HEAD~1"
+alias grst="$GIT_SCRIPTS_PATH/reset_soft.sh"
 alias gl="git log --pretty=format:\"%C(dim magenta)%h%Creset -%C(dim cyan)%d%Creset %s %C(dim green)(%cr) %C(brightblue)<%an>%Creset\" --abbrev-commit -30"
 alias glg="git log --graph --abbrev-commit --decorate --format=format:'%C(bold blue)%h%C(reset) - %C(bold cyan)%aD%C(reset) %C(bold green)(%ar)%C(reset)%C(auto)%d%C(reset)%n''          %C(white)%s%C(reset) %C(dim white)- %an%C(reset)'"
 

@@ -3,7 +3,7 @@
 1. Create new `.sh` file in the corresponding directory
 2. Add alias for launching this script in the .zshrc file
 3. Run `chmod -X /Users/{user}/{bash_scripts_directory}/{CORRESPONDING_DIRECTORY}/*` to give all files in the directory rights to be executed (must be executed for every subdirectory)
-4. Run `chmod -755 /Users/{user}/{bash_scripts_directory}/{CORRESPONDING_DIRECTORY}/*` to set access rights to all files in the directory (must be executed for every subdirectory)
+4. Run `chmod 755 /Users/{user}/{bash_scripts_directory}/{CORRESPONDING_DIRECTORY}/*` to set access rights to all files in the directory (must be executed for every subdirectory)
 
 # How to Link .zshrc, .p10k.zsh and other files from bash scripts directory to user directory
 
