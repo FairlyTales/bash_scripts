@@ -25,6 +25,13 @@ UTILITY_SCRIPTS_PATH="$ROOT_SCRIPTS_PATH/utility"
 GIT_SCRIPTS_PATH="$ROOT_SCRIPTS_PATH/git"
 IDE_SCRIPTS_PATH="$ROOT_SCRIPTS_PATH/ide"
 
+# Added by LM Studio CLI (lms)
+export PATH="$PATH:/Users/user/.lmstudio/bin"
+
+# add docker to path
+export PATH="$PATH:/Users/user/.docker/bin"
+# alias docker="/Applications/Docker.app/Contents/Resources/bin/docker"
+
 
 # ------------------------------------------------------------------------------------------
 
@@ -55,7 +62,6 @@ chruby 3.1.4
 
 # flutter sdk
 #export PATH="$PATH:$HOME/flutter/bin"
-
 
 
 # ------------------------------------------------------------------------------------------
@@ -264,6 +270,3 @@ alias gstl="git stash list"
 alias gstp="git stash pop"
 alias gsta="git stash apply"
 alias gstd="git stash drop"
-
-# Added by LM Studio CLI (lms)
-export PATH="$PATH:/Users/user/.lmstudio/bin"
