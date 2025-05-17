@@ -15,4 +15,4 @@ fi
 cp ../.env.auth ./.env.auth
 cp ../.env.local ./.env.local
 mkdir -p ./.cursor/rules
-cp /Users/user/Documents/Settings/ide/vs_code,\ cursor/cursor_project_specific_rules.mdc ./.cursor/rules/
+cp -a /Users/user/Documents/Settings/ide/vs_code,\ cursor/cursor_project_rules/ ./.cursor/rules/
