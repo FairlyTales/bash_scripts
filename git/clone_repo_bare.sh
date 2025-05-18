@@ -17,6 +17,7 @@ else
 fi
 
 mkdir .bare
+mkdir .project_cursorrules
 mv ./* ./.bare
 echo "gitdir: ./.bare" > .git
 
