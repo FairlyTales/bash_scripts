@@ -140,7 +140,7 @@ alias rc="rush change"
 
 # open .zshrc and bash_script directory in VSCode
 alias z="code /Users/user/bash_scripts && code -a /Users/user/.zshrc"
-alias csettings="code /Users/user/Documents/Settings/ide/vs_code,\ cursor"
+alias csettings="code /Users/user/Documents/Settings/ide/vs_code,\cursor"
 alias cs="csettings"
 
 

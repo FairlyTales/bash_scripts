@@ -52,7 +52,7 @@ printf "\nType user email or press Enter to use global:\n"
 read useremail
 git config user.email $useremail
 
-printf "\n\nRepository successfully cloned \\(^_^)/, worktree directory structure created, master branch created and set to remote\n\n\nYou can enter a new branch name to create and start working on it or just press enter to finish\n"
+printf "\n\nRepository successfully cloned \\(^_^)/, worktree directory structure created, master branch created and set to remote\n\n\nYou need to manually add cursorrules and aider config to this new project\n\nYou can enter a new branch name to create and start working on it or just press enter to finish\n"
 
 DIRNAME=$(dirname "$0")
 

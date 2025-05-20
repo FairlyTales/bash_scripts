@@ -5,3 +5,7 @@ node_modules
 .cursorrules
 .cursor
 .history
+.aider.chat.history.md
+.aider.input.history
+.aider.tags.cache.v4/*
+.aider.conf.yml
