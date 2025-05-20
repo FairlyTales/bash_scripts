@@ -22,7 +22,11 @@ mv ./* ./.bare
 echo "gitdir: ./.bare" > .git
 
 # git clone --bare don't add a refspec to the config, thus we add it manually
-echo 'fetch = +refs/heads/*:refs/remotes/origin/*' >> .bare/config
+echo '        fetch = +refs/heads/*:refs/remotes/origin/*
+[branch "master"]
+	remote = origin
+	merge = refs/heads/master
+	vscode-merge-base = origin/master' >> .bare/config
 
 defaultbranch="master"
 printf "\nSpecify the master branch name (default is master, if you use GitHub enter main)\n"
@@ -52,12 +56,15 @@ printf "\nType user email or press Enter to use global:\n"
 read useremail
 git config user.email $useremail
 
-printf "\n\nRepository successfully cloned \\(^_^)/, worktree directory structure created, master branch created and set to remote\n\n\nYou need to manually add cursorrules and aider config to this new project\n\nYou can enter a new branch name to create and start working on it or just press enter to finish\n"
+printf "\n\nRepository successfully cloned \\(^_^)/, worktree directory structure created, master branch created and set to remote\n\n\nYou need to manually add cursorrules and aider config to this new project\n"
 
-DIRNAME=$(dirname "$0")
+# Old part of the script used to create a new branch right after cloning the repo, currently commented out because we need to add cursorrules and aider config to the root of the project before starting to work on a new branch
+# printf "\n\nRepository successfully cloned \\(^_^)/, worktree directory structure created, master branch created and set to remote\n\n\nYou need to manually add cursorrules and aider config to this new project\n\nYou can enter a new branch name to create and start working on it or just press enter to finish\n"
 
-read branchname
-if [ -n "$branchname" ]
-then
-    $DIRNAME/worktree_add.sh $branchname
-fi
+# DIRNAME=$(dirname "$0")
+
+# read branchname
+# if [ -n "$branchname" ]
+# then
+    # $DIRNAME/worktree_add.sh $branchname
+# fi
