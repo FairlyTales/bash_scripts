@@ -64,6 +64,7 @@ chruby 3.1.4
 #export PATH="$PATH:$HOME/flutter/bin"
 
 
+
 # ------------------------------------------------------------------------------------------
 
 
@@ -195,7 +196,6 @@ alias с='code ./' # кириллическая
 
 # Cursor
 alias cr='cursor ./'
-alias cc='cursor ./'
 
 # launch local browser tools server for browser tools MCP
 alias bt='npx @agentdeskai/browser-tools-server@1.2.0'
@@ -218,7 +218,8 @@ alias g="git"
 alias gp="printf 'command not found, similar commands are:\n\n\tgpl - git pull\n\tgps - git push\n\tgpsf - git push -f\n\nyou can find all available aliases using the command: alias\n'"
 alias gs="git status"
 alias gb="git branch"
-alias gbd="git branch -D"
+alias gbc="$GIT_SCRIPTS_PATH/branch_checkout.sh"
+alias gbd="$GIT_SCRIPTS_PATH/branch_delete.sh"
 alias gf="git fetch"
 alias gpl="git pull"
 alias gply="git pull && yarn"
