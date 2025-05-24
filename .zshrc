@@ -30,7 +30,6 @@ export PATH="$PATH:/Users/user/.lmstudio/bin"
 
 # add docker to path
 export PATH="$PATH:/Users/user/.docker/bin"
-# alias docker="/Applications/Docker.app/Contents/Resources/bin/docker"
 
 
 # ------------------------------------------------------------------------------------------
@@ -237,6 +236,7 @@ alias glg="git log --graph --abbrev-commit --decorate --format=format:'%C(bold b
 
 # remove all uncommitted changes and delete all untracked files
 alias gclean="git reset --hard HEAD && git clean -fd"
+alias gcln="gclean"
 
 # display list of all worktrees excluding master
 alias gtl="$GIT_SCRIPTS_PATH/get_list_of_worktrees.sh"
