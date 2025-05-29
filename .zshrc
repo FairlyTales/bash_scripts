@@ -143,6 +143,8 @@ alias z="code /Users/user/bash_scripts && code -a /Users/user/.zshrc"
 alias csettings="code /Users/user/Documents/Settings/ide/vs_code,\cursor"
 alias cs="csettings"
 
+alias pl="cd /Users/user/My\ stuff/Coding/llm_stuff/prompt_library && uv run marimo edit prompt_library.py"
+alias ple="cd /Users/user/My\ stuff/Coding/llm_stuff/prompt_library && $IDE_SCRIPTS_PATH/launch_current_ide_in_pwd.sh"
 
 # get list of all active ports
 alias ports="lsof -i -n -P"
@@ -173,7 +175,7 @@ alias k="k:soft"
 # kill mysky app-shell and spend on ports 3000 and 3001, immediate termination
 alias k:hard="$UTILITY_SCRIPTS_PATH/kill_appshell_and_spend_dev_servers.sh"
 
-alias cd.="cd ../"
+alias cd..="cd ../"
 alias t="touch"
 alias m="mkdir"
 
