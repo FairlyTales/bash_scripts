@@ -31,6 +31,9 @@ export PATH="$PATH:/Users/user/.lmstudio/bin"
 # add docker to path
 export PATH="$PATH:/Users/user/.docker/bin"
 
+# add wails to path
+export PATH="$PATH:/Users/user/go/bin"
+
 
 # ------------------------------------------------------------------------------------------
 
