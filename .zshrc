@@ -142,12 +142,13 @@ alias rc="rush change"
 #
 
 # open .zshrc and bash_script directory in VSCode
-alias z="code /Users/user/bash_scripts && code -a /Users/user/.zshrc"
+alias z="cursor /Users/user/bash_scripts && cursor -a /Users/user/.zshrc"
 alias csettings="code /Users/user/Documents/Settings/ide/vs_code,\cursor"
 alias cs="csettings"
 
 alias pl="cd /Users/user/My\ stuff/Coding/llm_stuff/prompt_library && uv run marimo edit prompt_library.py"
 alias ple="cd /Users/user/My\ stuff/Coding/llm_stuff/prompt_library && $IDE_SCRIPTS_PATH/launch_current_ide_in_pwd.sh"
+alias plex="$UTILITY_SCRIPTS_PATH/export_prompt_library.sh"
 
 # get list of all active ports
 alias ports="lsof -i -n -P"
@@ -276,3 +277,14 @@ alias gstl="git stash list"
 alias gstp="git stash pop"
 alias gsta="git stash apply"
 alias gstd="git stash drop"
+
+# bun completions
+[ -s "/Users/user/.bun/_bun" ] && source "/Users/user/.bun/_bun"
+
+# bun
+export BUN_INSTALL="$HOME/.bun"
+export PATH="$BUN_INSTALL/bin:$PATH"
+
+# bum
+export BUM_INSTALL="$HOME/.bum"
+export PATH="$BUM_INSTALL/bin:$PATH"
