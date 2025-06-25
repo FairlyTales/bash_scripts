@@ -12,3 +12,6 @@ node_modules
 .aider.input.history
 .aider.tags.cache.v4/*
 .aider.conf.yml
+
+# Gemini
+.gemini

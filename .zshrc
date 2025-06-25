@@ -143,7 +143,7 @@ alias rc="rush change"
 
 # open .zshrc and bash_script directory in VSCode
 alias z="cursor /Users/user/bash_scripts && cursor -a /Users/user/.zshrc"
-alias csettings="code /Users/user/Documents/Settings/ide/vs_code,\cursor"
+alias csettings="cursor /Users/user/Documents/Settings/ide/vs_code,\cursor"
 alias cs="csettings"
 
 alias pl="cd /Users/user/My\ stuff/Coding/llm_stuff/prompt_library && uv run marimo edit prompt_library.py"
@@ -203,7 +203,7 @@ alias с='code ./' # кириллическая
 alias cr='cursor ./'
 
 # Gemini cli
-alias gm="gemini"
+alias gm="gemini --yolo"
 
 # launch local browser tools server for browser tools MCP
 alias bt='npx @agentdeskai/browser-tools-server@1.2.0'
