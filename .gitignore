@@ -3,6 +3,7 @@
 .idea
 .vscode
 .history
+.env
 
 # js stuff
 node_modules
