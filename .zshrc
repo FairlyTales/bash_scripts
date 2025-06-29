@@ -146,9 +146,13 @@ alias z="cursor /Users/user/bash_scripts && cursor -a /Users/user/.zshrc"
 alias csettings="cursor /Users/user/Documents/Settings/ide/vs_code,\cursor"
 alias cs="csettings"
 
+# prompt library
 alias pl="cd /Users/user/My\ stuff/Coding/llm_stuff/prompt_library && uv run marimo edit prompt_library.py"
 alias ple="cd /Users/user/My\ stuff/Coding/llm_stuff/prompt_library && $IDE_SCRIPTS_PATH/launch_current_ide_in_pwd.sh"
 alias plex="$UTILITY_SCRIPTS_PATH/export_prompt_library.sh"
+
+# repomix
+alias rp="repomix"
 
 # get list of all active ports
 alias ports="lsof -i -n -P"
