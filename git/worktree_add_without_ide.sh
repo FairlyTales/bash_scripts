@@ -14,6 +14,7 @@ fi
 
 cp ../.env.auth ./.env.auth
 cp ../.env.local ./.env.local
+cp ../.env ./.env
 
 # Cursor rules are under git from 28.05.2025
 # mkdir -p ./.cursor/rules
