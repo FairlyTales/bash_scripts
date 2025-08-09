@@ -98,8 +98,8 @@ alias yf="yarn tsc && yarn eslint && yarn test"
 
 # Work specific yarn aliases
 alias yst="yarn start:templates"
-alias ysts="yarn start:templates:single-state"
-alias ysta="yarn start:templates:all-states"
+alias ysts="yarn start:templates:single-state-tax"
+alias ysta="yarn start:templates:all-states-tax"
 alias yt="yarn playwright test"
 alias ytu="yarn test:ui"
 alias yte="yarn test:e2e"
@@ -145,7 +145,7 @@ alias rc="rush change"
 
 # open .zshrc and bash_script directory in VSCode
 alias z="cursor /Users/user/bash_scripts && cursor -a /Users/user/.zshrc"
-alias csettings="cursor /Users/user/Documents/Settings/ide/vs_code,\cursor"
+alias csettings="cursor /Users/user/Documents/_Settings/ide"
 alias cs="csettings"
 
 # prompt library
@@ -207,6 +207,7 @@ alias с='code ./' # кириллическая
 
 # Cursor
 alias cr='cursor ./'
+alias ca='cursor-agent'
 
 # Gemini cli
 alias gm="gemini --yolo"
@@ -297,3 +298,5 @@ export PATH="$BUN_INSTALL/bin:$PATH"
 # bum
 export BUM_INSTALL="$HOME/.bum"
 export PATH="$BUM_INSTALL/bin:$PATH"
+
+[[ "$TERM_PROGRAM" == "kiro" ]] && . "$(kiro --locate-shell-integration-path zsh)"
