@@ -202,12 +202,13 @@ alias s="$IDE_SCRIPTS_PATH/launch_webstorm_in_pwd.sh"
 alias ы='s'
 
 # VS code
-alias c='code ./' # латинская c
-alias с='code ./' # кириллическая
+alias c='code ./' # латиница
+alias с='code ./' # кириллица
 
 # Cursor
 alias cr='cursor ./'
 alias ca='cursor-agent'
+alias ск='ca' # кириллица
 
 # Gemini cli
 alias gm="gemini --yolo"
