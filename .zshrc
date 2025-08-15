@@ -213,6 +213,9 @@ alias ск='ca' # кириллица
 # Gemini cli
 alias gm="gemini --yolo"
 
+# Claude cli
+alias cl="claude"
+
 # launch local browser tools server for browser tools MCP
 alias bt='npx @agentdeskai/browser-tools-server@1.2.0'
 
