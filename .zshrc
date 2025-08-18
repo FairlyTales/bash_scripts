@@ -24,6 +24,7 @@ ROOT_SCRIPTS_PATH="/Users/user/bash_scripts"
 UTILITY_SCRIPTS_PATH="$ROOT_SCRIPTS_PATH/utility"
 GIT_SCRIPTS_PATH="$ROOT_SCRIPTS_PATH/git"
 IDE_SCRIPTS_PATH="$ROOT_SCRIPTS_PATH/ide"
+MCP_SERVERS_PATH="/Users/user/My\ stuff/Coding/llm_stuff/mcp_servers"
 
 # Added by LM Studio CLI (lms)
 export PATH="$PATH:/Users/user/.lmstudio/bin"
@@ -33,7 +34,6 @@ export PATH="$PATH:/Users/user/.docker/bin"
 
 # add wails to path
 export PATH="$PATH:/Users/user/go/bin"
-
 
 # ------------------------------------------------------------------------------------------
 
@@ -214,9 +214,9 @@ alias ск='ca' # кириллица
 alias gm="gemini --yolo"
 
 # Claude cli
-alias cl="claude"
+alias cl="claude --dangerously-skip-permissions"
 
-# launch local browser tools server for browser tools MCP
+# MCP servers
 alias bt='npx @agentdeskai/browser-tools-server@1.2.0'
 
 # XCode
