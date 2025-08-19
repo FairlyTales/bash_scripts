@@ -17,8 +17,5 @@ node_modules
 # Gemini
 .gemini
 
-# Claude Code
-.claude
-
 # MCP servers
 .serena
