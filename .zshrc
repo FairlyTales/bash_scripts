@@ -99,7 +99,7 @@ alias yf="yarn tsc && yarn eslint && yarn test"
 # Work specific yarn aliases
 alias yst="yarn start:templates"
 alias ysts="yarn start:templates:single-state-tax"
-alias ysta="yarn start:templates:all-states-tax"
+alias ysta="yarn start:templates:multiple-states-tax"
 alias yt="yarn playwright test"
 alias ytu="yarn test:ui"
 alias yte="yarn test:e2e"
