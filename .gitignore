@@ -4,6 +4,7 @@
 .vscode
 .history
 .env
+__pycache__
 
 # js stuff
 node_modules
