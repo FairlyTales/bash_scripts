@@ -155,3 +155,147 @@ assert_mock_called_with() {
         return 1
     fi
 }
+
+# Setup mock git commands for testing scripts that use git clone, push, etc.
+setup_git_mocks() {
+    export PATH="$TEST_TEMP_DIR:$PATH"
+    
+    # Create mock git that intercepts specific subcommands
+    cat > "$TEST_TEMP_DIR/git" << 'EOF'
+#!/usr/bin/env bash
+
+# Pass through most git commands to real git, but mock specific ones
+case "$1" in
+    "clone")
+        echo "git $*" >> "$TEST_TEMP_DIR/git_calls.log"
+        # Create fake cloned directory
+        if [ -n "$3" ]; then
+            mkdir -p "$3"
+            cd "$3"
+        elif [ -n "$2" ]; then
+            mkdir -p "$2"
+            cd "$2"  
+        fi
+        # Initialize as git repo
+        /usr/bin/git init
+        /usr/bin/git config user.name "Test User"
+        /usr/bin/git config user.email "test@example.com"
+        echo "# Cloned Repository" > README.md
+        /usr/bin/git add README.md
+        /usr/bin/git commit -m "Initial commit"
+        exit 0
+        ;;
+    "push")
+        echo "git $*" >> "$TEST_TEMP_DIR/git_calls.log"
+        exit 0
+        ;;
+    "fetch")
+        echo "git $*" >> "$TEST_TEMP_DIR/git_calls.log"
+        exit 0
+        ;;
+    "pull")
+        echo "git $*" >> "$TEST_TEMP_DIR/git_calls.log"
+        exit 0
+        ;;
+    *)
+        # Pass through to real git for other commands
+        exec /usr/bin/git "$@"
+        ;;
+esac
+EOF
+    chmod +x "$TEST_TEMP_DIR/git"
+}
+
+# Create worktrees in test repo for worktree-related tests
+create_test_worktree() {
+    local worktree_name="$1"
+    local branch_name="${2:-$worktree_name}"
+    
+    if [ -z "$worktree_name" ]; then
+        echo "Error: worktree name required"
+        return 1
+    fi
+    
+    # Create the branch first
+    git checkout -b "$branch_name"
+    echo "Content for $branch_name" > "${branch_name}.txt"
+    git add "${branch_name}.txt"
+    git commit -m "Add content for $branch_name"
+    git checkout master 2>/dev/null || git checkout main
+    
+    # Create the worktree
+    git worktree add "../$worktree_name" "$branch_name"
+}
+
+# Check if worktree exists
+assert_worktree_exists() {
+    local worktree_name="$1"
+    if ! git worktree list | grep -q "$worktree_name"; then
+        echo "Worktree '$worktree_name' does not exist"
+        return 1
+    fi
+}
+
+# Check if worktree does not exist
+assert_worktree_not_exists() {
+    local worktree_name="$1"
+    if git worktree list | grep -q "$worktree_name"; then
+        echo "Worktree '$worktree_name' should not exist but it does"
+        return 1
+    fi
+}
+
+# Create fake remote repository for testing
+create_fake_remote() {
+    local remote_dir="$TEST_TEMP_DIR/fake_remote.git"
+    mkdir -p "$remote_dir"
+    cd "$remote_dir"
+    git init --bare
+    
+    # Add the fake remote to test repo
+    cd "$TEST_REPO_DIR"
+    git remote add origin "$remote_dir"
+    
+    echo "$remote_dir"
+}
+
+# Check git config values
+assert_git_config() {
+    local key="$1"
+    local expected_value="$2"
+    local actual_value
+    actual_value=$(git config "$key")
+    
+    if [ "$actual_value" != "$expected_value" ]; then
+        echo "Expected git config $key to be '$expected_value', but got '$actual_value'"
+        return 1
+    fi
+}
+
+# Mock user input for read commands
+mock_user_input() {
+    local input="$1"
+    echo "$input"
+}
+
+# Setup comprehensive mocks for all external tools
+setup_all_mocks() {
+    setup_package_manager_mocks
+    setup_git_mocks
+    
+    # Clear any existing logs
+    rm -f "$TEST_TEMP_DIR/git_calls.log"
+    rm -f "$TEST_TEMP_DIR/package_manager_calls.log"
+    rm -f "$TEST_TEMP_DIR/ide_calls.log"
+    
+    # Create mock IDE launcher if needed
+    if [ ! -f "$ROOT_SCRIPTS_PATH/ide/launch_current_ide_in_pwd.sh" ]; then
+        mkdir -p "$ROOT_SCRIPTS_PATH/ide"
+        cat > "$ROOT_SCRIPTS_PATH/ide/launch_current_ide_in_pwd.sh" << 'EOF'
+#!/usr/bin/env bash
+echo "mock IDE launcher called" >> "$TEST_TEMP_DIR/ide_calls.log"
+exit 0
+EOF
+        chmod +x "$ROOT_SCRIPTS_PATH/ide/launch_current_ide_in_pwd.sh"
+    fi
+}
