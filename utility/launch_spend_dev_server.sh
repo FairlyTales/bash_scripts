@@ -12,6 +12,6 @@ then
     printf "Process on port 3001 terminated\n"
 fi
 
-printf "Launching MySky Spend on port 3001...\n"
-cd /Users/user/Mysky/projects/mysky_spend
+printf "Launching MySky Spend master worktree on port 3001...\n"
+cd /Users/user/Mysky/projects/_spend_front/master
 yarn start

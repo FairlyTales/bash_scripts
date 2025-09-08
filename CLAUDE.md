@@ -67,3 +67,83 @@ The worktree scripts (`gta`, `gtar`, etc.) automatically:
 - Copy environment files (.env, .env.local, .env.auth, .gemini)
 - Copy aider configuration (.aider.conf.yml)
 - Launch IDE in the new worktree directory
+
+## Testing
+
+This repository includes a comprehensive test suite for bash scripts using [bats-core](https://bats-core.readthedocs.io/).
+
+### Test Structure
+
+- `test/` - Main test directory containing test runner and bats helpers
+- `git/tests/` - Tests for git workflow scripts
+- `utility/tests/` - Tests for utility scripts (when added)
+- `ide/tests/` - Tests for IDE launcher scripts (when added)
+
+### Running Tests
+
+```bash
+# Run all tests
+./test/run_tests.sh
+
+# Run specific test file
+bats git/tests/reset_soft.bats
+
+# Run tests with verbose output
+bats --verbose-run git/tests/
+```
+
+### Test Dependencies
+
+- **bats-core**: Main testing framework (`brew install bats-core`)
+- **bats-support**: Additional helper functions (included in `test/bats-helpers/`)
+- **bats-assert**: Assertion helpers (included in `test/bats-helpers/`)
+- **bats-file**: File-related assertions (included in `test/bats-helpers/`)
+
+### Writing New Tests
+
+When adding a new script, create a corresponding `.bats` test file:
+
+1. Create `script_name.bats` in the appropriate `tests/` directory
+2. Load the test helper: `load test_helper`
+3. Use `setup()` and `teardown()` functions for test preparation/cleanup
+4. Write test cases using `@test "description" { ... }` blocks
+
+Example test structure:
+```bash
+#!/usr/bin/env bats
+
+load test_helper
+
+setup() {
+    create_test_repo
+}
+
+teardown() {
+    teardown_test_repo
+}
+
+@test "script does expected behavior" {
+    run "$GIT_SCRIPTS_PATH/script.sh" arg1
+    assert_success
+    assert_output --partial "expected output"
+}
+```
+
+### Test Utilities
+
+The `test_helper.bash` provides common utilities:
+- `create_test_repo()` - Creates isolated git repository for testing
+- `create_branch(name)` - Creates and switches back from test branch
+- `assert_current_branch(name)` - Verifies current git branch
+- `setup_package_manager_mocks()` - Mocks yarn/npm commands
+- `simulate_user_input(input)` - Provides input for interactive scripts
+
+### Test Coverage
+
+Current test coverage includes:
+- Git reset operations (`reset_soft.sh`)
+- Interactive branch checkout (`branch_checkout.sh`)
+- Error handling and edge cases
+- Input validation
+
+Tests ensure scripts work correctly across different scenarios and handle edge cases gracefully.

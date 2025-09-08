@@ -292,6 +292,9 @@ alias gstp="git stash pop"
 alias gsta="git stash apply"
 alias gstd="git stash drop"
 
+# run bash script tests
+alias test-scripts="$ROOT_SCRIPTS_PATH/test/run_tests.sh"
+
 # bun completions
 [ -s "/Users/user/.bun/_bun" ] && source "/Users/user/.bun/_bun"
 
