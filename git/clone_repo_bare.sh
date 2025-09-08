@@ -21,19 +21,35 @@ mkdir .project_cursorrules
 mv ./* ./.bare
 echo "gitdir: ./.bare" > .git
 
-# git clone --bare don't add a refspec to the config, thus we add it manually
-echo '        fetch = +refs/heads/*:refs/remotes/origin/*
-[branch "master"]
-	remote = origin
-	merge = refs/heads/master
-	vscode-merge-base = origin/master' >> .bare/config
+# Store the project name for worktree naming
+if [ -n "$2" ]
+then
+    projectname="$2"
+else
+    projectname="$directoryname"
+fi
 
 defaultbranch="master"
 printf "\nSpecify the master branch name (default is master, if you use GitHub enter main)\n"
 read masterbranch
-: ${masterbranch:=$defaultbranch}
-git worktree add ./$masterbranch $masterbranch
-cd ./$masterbranch
+
+if [ -z "$masterbranch" ]; then
+    masterbranch="$defaultbranch"
+fi
+
+printf "Default branch is set to: $defaultbranch\n\n"
+
+# git clone --bare don't add a refspec to the config, thus we add it manually
+echo '        fetch = +refs/heads/*:refs/remotes/origin/*
+[branch "'$masterbranch'"]
+	remote = origin
+	merge = refs/heads/'$masterbranch'
+	vscode-merge-base = origin/'$masterbranch'' >> .bare/config
+
+git fetch origin
+git worktree add ./${projectname}-${masterbranch} origin/$masterbranch
+cd ./${projectname}-${masterbranch}
+git checkout $masterbranch
 
 if [ -n "$3" ]
 then
@@ -61,10 +77,4 @@ printf "\n\nRepository successfully cloned \\(^_^)/, worktree directory structur
 # Old part of the script used to create a new branch right after cloning the repo, currently commented out because we need to add cursorrules and aider config to the root of the project before starting to work on a new branch
 # printf "\n\nRepository successfully cloned \\(^_^)/, worktree directory structure created, master branch created and set to remote\n\n\nYou need to manually add cursorrules and aider config to this new project\n\nYou can enter a new branch name to create and start working on it or just press enter to finish\n"
 
-# DIRNAME=$(dirname "$0")
-
-# read branchname
-# if [ -n "$branchname" ]
-# then
-    # $DIRNAME/worktree_add.sh $branchname
-# fi
+printf "\n\nRepository successfully cloned \\(^_^)/, worktree directory structure created, master branch created and set to remote\n\n\nYou need to manually add claude, gemini and other configs to this project\n"
