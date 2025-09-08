@@ -37,8 +37,10 @@ create_branch() {
     fi
     
     git checkout -b "$branch_name"
-    # Create safe filename by replacing special characters
+    # Create safe filename by replacing special characters with underscores
     local safe_filename="${branch_name//[\/]/_}.txt"
+    # Ensure directory exists for the safe filename
+    mkdir -p "$(dirname "$safe_filename")" 2>/dev/null || true
     echo "Content for $branch_name" > "$safe_filename"
     git add "$safe_filename"
     git commit -m "Add content for $branch_name"
@@ -169,20 +171,37 @@ case "$1" in
     "clone")
         echo "git $*" >> "$TEST_TEMP_DIR/git_calls.log"
         # Create fake cloned directory
-        if [ -n "$3" ]; then
-            mkdir -p "$3"
-            cd "$3"
-        elif [ -n "$2" ]; then
-            mkdir -p "$2"
-            cd "$2"  
+        # Handle both "git clone URL DIR" and "git clone --bare URL DIR"
+        local target_dir=""
+        if [ "$2" = "--bare" ]; then
+            # git clone --bare URL DIR - directory is $4
+            target_dir="$4"
+        else
+            # git clone URL DIR - directory is $3, or URL basename if $3 is empty
+            if [ -n "$3" ]; then
+                target_dir="$3"
+            else
+                # Extract basename from URL in $2
+                target_dir=$(basename "$2" .git)
+            fi
         fi
+        
+        if [ -n "$target_dir" ]; then
+            mkdir -p "$target_dir"
+            cd "$target_dir"
+        fi
+        
         # Initialize as git repo
-        /usr/bin/git init
-        /usr/bin/git config user.name "Test User"
-        /usr/bin/git config user.email "test@example.com"
-        echo "# Cloned Repository" > README.md
-        /usr/bin/git add README.md
-        /usr/bin/git commit -m "Initial commit"
+        if [ "$2" = "--bare" ]; then
+            /usr/bin/git init --bare
+        else
+            /usr/bin/git init
+            /usr/bin/git config user.name "Test User"
+            /usr/bin/git config user.email "test@example.com"
+            echo "# Cloned Repository" > README.md
+            /usr/bin/git add README.md
+            /usr/bin/git commit -m "Initial commit"
+        fi
         exit 0
         ;;
     "push")
@@ -218,18 +237,22 @@ create_test_worktree() {
     
     # Create the branch first
     git checkout -b "$branch_name"
-    echo "Content for $branch_name" > "${branch_name}.txt"
-    git add "${branch_name}.txt"
+    # Create safe filename by replacing special characters with underscores
+    local safe_filename="${branch_name//[\/]/_}.txt"
+    echo "Content for $branch_name" > "$safe_filename"
+    git add "$safe_filename"
     git commit -m "Add content for $branch_name"
     git checkout master 2>/dev/null || git checkout main
     
-    # Create the worktree
+    # Create the worktree with exact branch name as directory name
+    # Note: This works for testing but may have issues with branches containing slashes in real use
     git worktree add "../$worktree_name" "$branch_name"
 }
 
 # Check if worktree exists
 assert_worktree_exists() {
     local worktree_name="$1"
+    # Check for exact worktree name in worktree list
     if ! git worktree list | grep -q "$worktree_name"; then
         echo "Worktree '$worktree_name' does not exist"
         return 1
@@ -239,6 +262,7 @@ assert_worktree_exists() {
 # Check if worktree does not exist
 assert_worktree_not_exists() {
     local worktree_name="$1"
+    # Check that exact worktree name is not in worktree list
     if git worktree list | grep -q "$worktree_name"; then
         echo "Worktree '$worktree_name' should not exist but it does"
         return 1

@@ -56,10 +56,10 @@ teardown() {
     assert_mock_called_with "$TEST_TEMP_DIR/package_manager_calls.log" "npm install"
 }
 
-@test "clone_repo.sh installs dependencies with yarn when user selects Y" {
+@test "clone_repo.sh installs dependencies with yarn when specified as argument" {
     cd "$TEST_TEMP_DIR"
     
-    run bash -c "echo -e 'testuser\ntestuser@example.com\ny\nN' | $GIT_SCRIPTS_PATH/clone_repo.sh https://github.com/test/repo.git test_repo"
+    run zsh -c "printf 'testuser\ntestuser@example.com\nN' | $GIT_SCRIPTS_PATH/clone_repo.sh https://github.com/test/repo.git test_repo yarn"
     
     assert_success
     
@@ -67,10 +67,10 @@ teardown() {
     assert_mock_called_with "$TEST_TEMP_DIR/package_manager_calls.log" "yarn install"
 }
 
-@test "clone_repo.sh installs dependencies with npm when user selects N" {
+@test "clone_repo.sh installs dependencies with npm when specified as argument" {
     cd "$TEST_TEMP_DIR"
     
-    run bash -c "echo -e 'testuser\ntestuser@example.com\nn\nN' | $GIT_SCRIPTS_PATH/clone_repo.sh https://github.com/test/repo.git test_repo"
+    run zsh -c "printf 'testuser\ntestuser@example.com\nN' | $GIT_SCRIPTS_PATH/clone_repo.sh https://github.com/test/repo.git test_repo npm"
     
     assert_success
     

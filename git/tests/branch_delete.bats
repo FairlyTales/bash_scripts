@@ -49,8 +49,8 @@ teardown() {
     create_branch "feature-to-delete"
     create_branch "feature-to-keep"
     
-    # Select branch 1 (feature-to-delete, alphabetically first)
-    run bash -c "echo '1' | $GIT_SCRIPTS_PATH/branch_delete.sh"
+    # Select branch 1 (feature-to-delete, alphabetically first) and force delete
+    run bash -c "printf '1\ny\n' | $GIT_SCRIPTS_PATH/branch_delete.sh"
     
     assert_success
     
@@ -127,8 +127,8 @@ teardown() {
     create_branch "branch-to-delete"
     create_branch "branch-to-keep"
     
-    # Delete the first branch
-    run bash -c "echo '1' | $GIT_SCRIPTS_PATH/branch_delete.sh"
+    # Delete the first branch and force delete when prompted
+    run bash -c "printf '1\ny\n' | $GIT_SCRIPTS_PATH/branch_delete.sh"
     
     assert_success
     assert_output --partial "Updated branch list:"

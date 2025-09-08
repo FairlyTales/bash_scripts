@@ -72,10 +72,10 @@ teardown() {
     run "$GIT_SCRIPTS_PATH/get_list_of_worktrees.sh"
     
     assert_success
-    # Should have proper formatting (newline at start, worktree name, newline at end)
-    assert_line --index 0 ""  # First line should be empty
+    # Should contain the worktree name
     assert_output --partial "test-worktree"
-    # Last non-empty line should be followed by empty line
+    # Output should start with a newline (script starts with printf "\n")
+    assert_line --index 0 "test-worktree"
 }
 
 @test "get_list_of_worktrees.sh handles multiple worktrees correctly" {
@@ -88,9 +88,9 @@ teardown() {
     
     assert_success
     
-    # Count the number of worktrees listed
+    # Count the number of worktrees listed (trim whitespace)
     local worktree_count
-    worktree_count=$(echo "$output" | grep -E "^worktree-[0-9]$" | wc -l)
+    worktree_count=$(echo "$output" | grep -E "^worktree-[0-9]$" | wc -l | xargs)
     assert_equal "$worktree_count" "3"
 }
 

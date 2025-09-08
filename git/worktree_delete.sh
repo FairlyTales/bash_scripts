@@ -7,8 +7,8 @@
 # git worktree list returns a string
 worktreeListString=$(git worktree list)
 
-# git for-each-ref returns an array of all the refs exluding excluded ones
-refArray=($(git for-each-ref  --format="%(refname:short)" --exclude refs/heads/master))
+# git for-each-ref returns an array of all the refs, then we filter out master
+refArray=($(git for-each-ref  --format="%(refname:short)" refs/heads/ | grep -v "^master$" | grep -v "^main$"))
 refArrayLength=${#refArray[@]}
 
 worktreeArray=()
