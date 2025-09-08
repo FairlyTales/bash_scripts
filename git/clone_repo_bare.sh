@@ -66,15 +66,14 @@ fi
 
 printf "\nType user name or press Enter to use global:\n"
 read username
-git config user.name $username
+if [ -n "$username" ]; then
+    git config user.name "$username"
+fi
 
 printf "\nType user email or press Enter to use global:\n"
 read useremail
-git config user.email $useremail
+if [ -n "$useremail" ]; then
+    git config user.email "$useremail"
+fi
 
-printf "\n\nRepository successfully cloned \\(^_^)/, worktree directory structure created, master branch created and set to remote\n\n\nYou need to manually add cursorrules and aider config to this new project\n"
-
-# Old part of the script used to create a new branch right after cloning the repo, currently commented out because we need to add cursorrules and aider config to the root of the project before starting to work on a new branch
-# printf "\n\nRepository successfully cloned \\(^_^)/, worktree directory structure created, master branch created and set to remote\n\n\nYou need to manually add cursorrules and aider config to this new project\n\nYou can enter a new branch name to create and start working on it or just press enter to finish\n"
-
-printf "\n\nRepository successfully cloned \\(^_^)/, worktree directory structure created, master branch created and set to remote\n\n\nYou need to manually add claude, gemini and other configs to this project\n"
+printf "\nRepository successfully cloned \\(^_^)/, worktree directory structure created, master branch created and set to remote\n\n\nYou need to manually add cursorrules and aider config to this new project\n"
