@@ -213,10 +213,31 @@ alias ск='ca' # кириллица
 # Gemini cli
 alias gm="gemini --yolo"
 
-# Claude cli
+# Claude Code
 alias cl="claude --dangerously-skip-permissions"
 
-# MCP servers
+# Claude Code with MCP servers
+alias clf="claude --dangerously-skip-permissions --mcp-config .mcp.framelink_figma.json"
+alias clp="claude --dangerously-skip-permissions --mcp-config .mcp.playwright.json"
+alias clg="claude --dangerously-skip-permissions --mcp-config .mcp.gitlab.json"
+
+# Claude Code with 2 MCP servers
+alias clfp="claude --dangerously-skip-permissions --mcp-config .mcp.framelink_figma.json --mcp-config .mcp.playwright.json"
+alias clpf="claude --dangerously-skip-permissions --mcp-config .mcp.framelink_figma.json --mcp-config .mcp.playwright.json"
+alias clpg="claude --dangerously-skip-permissions --mcp-config .mcp.playwright.json --mcp-config .mcp.gitlab.json"
+alias clgp="claude --dangerously-skip-permissions --mcp-config .mcp.playwright.json --mcp-config .mcp.gitlab.json"
+alias clfg="claude --dangerously-skip-permissions --mcp-config .mcp.framelink_figma.json --mcp-config .mcp.gitlab.json"
+alias clgf="claude --dangerously-skip-permissions --mcp-config .mcp.framelink_figma.json --mcp-config .mcp.gitlab.json"
+
+# Claude Code with 3 MCP servers
+alias clfpg="claude --dangerously-skip-permissions --mcp-config .mcp.framelink_figma.json --mcp-config .mcp.playwright.json --mcp-config .mcp.gitlab.json"
+alias clpfg="claude --dangerously-skip-permissions --mcp-config .mcp.playwright.json --mcp-config .mcp.framelink_figma.json --mcp-config .mcp.gitlab.json"
+alias clgfp="claude --dangerously-skip-permissions --mcp-config .mcp.gitlab.json --mcp-config .mcp.framelink_figma.json --mcp-config .mcp.playwright.json"
+alias clpgf="claude --dangerously-skip-permissions --mcp-config .mcp.gitlab.json --mcp-config .mcp.playwright.json --mcp-config .mcp.framelink_figma.json"
+alias clfpg="claude --dangerously-skip-permissions --mcp-config .mcp.framelink_figma.json --mcp-config .mcp.playwright.json --mcp-config .mcp.gitlab.json"
+alias clpgf="claude --dangerously-skip-permissions --mcp-config .mcp.framelink_figma.json --mcp-config .mcp.playwright.json --mcp-config .mcp.gitlab.json"
+
+# Standalone MCP servers
 alias bt='npx @agentdeskai/browser-tools-server@1.2.0'
 
 # XCode

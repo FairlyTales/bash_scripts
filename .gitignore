@@ -20,3 +20,9 @@ node_modules
 
 # MCP servers
 .serena
+
+# logs
+logs
+
+# mcp server configs
+.mcp.*
