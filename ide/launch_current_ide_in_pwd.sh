@@ -1,3 +1,4 @@
-#!/usr/bin/env bash
-echo "mock IDE launcher called" >> "$TEST_TEMP_DIR/ide_calls.log"
-exit 0
+#!/usr/bin/env zsh
+
+DIRNAME=$(dirname "$0")
+$DIRNAME/../ide/launch_cursor_in_pwd.sh
