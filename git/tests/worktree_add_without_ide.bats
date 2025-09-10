@@ -12,7 +12,7 @@ teardown() {
     teardown_test_repo
 }
 
-@test "worktree_add_without_ide.sh creates worktree with default package manager" {
+@test "creates worktree with default package manager" {
     local worktree_name="feature-no-ide"
     
     run bash -c "cd $TEST_REPO_DIR && echo '' | $GIT_SCRIPTS_PATH/worktree_add_without_ide.sh $worktree_name"
@@ -27,7 +27,7 @@ teardown() {
     assert_mock_called_with "$TEST_TEMP_DIR/package_manager_calls.log" "yarn install"
 }
 
-@test "worktree_add_without_ide.sh creates worktree with specified package manager" {
+@test "creates worktree with specified package manager" {
     local worktree_name="feature-no-ide"
     
     run bash -c "cd $TEST_REPO_DIR && $GIT_SCRIPTS_PATH/worktree_add_without_ide.sh $worktree_name npm"
@@ -39,7 +39,7 @@ teardown() {
     assert_mock_called_with "$TEST_TEMP_DIR/package_manager_calls.log" "npm install"
 }
 
-@test "worktree_add_without_ide.sh copies environment files" {
+@test "copies environment files" {
     local worktree_name="feature-no-ide"
     
     run bash -c "cd $TEST_REPO_DIR && echo '' | $GIT_SCRIPTS_PATH/worktree_add_without_ide.sh $worktree_name"
@@ -58,7 +58,7 @@ teardown() {
     assert_output "AUTH_TOKEN=test_auth"
 }
 
-@test "worktree_add_without_ide.sh does NOT launch IDE" {
+@test "does NOT launch IDE" {
     local worktree_name="feature-no-ide"
     
     run bash -c "cd $TEST_REPO_DIR && echo '' | $GIT_SCRIPTS_PATH/worktree_add_without_ide.sh $worktree_name"
@@ -69,7 +69,7 @@ teardown() {
     [ ! -f "$TEST_TEMP_DIR/ide_calls.log" ] || [ ! -s "$TEST_TEMP_DIR/ide_calls.log" ]
 }
 
-@test "worktree_add_without_ide.sh creates git worktree successfully" {
+@test "creates git worktree successfully" {
     local worktree_name="feature-no-ide"
     
     run bash -c "cd $TEST_REPO_DIR && echo '' | $GIT_SCRIPTS_PATH/worktree_add_without_ide.sh $worktree_name"
@@ -85,7 +85,7 @@ teardown() {
     assert_output "$worktree_name"
 }
 
-@test "worktree_add_without_ide.sh shows package manager messages" {
+@test "shows package manager messages" {
     local worktree_name="feature-no-ide"
     
     run bash -c "cd $TEST_REPO_DIR && $GIT_SCRIPTS_PATH/worktree_add_without_ide.sh $worktree_name npm"
@@ -94,7 +94,7 @@ teardown() {
     assert_output --partial "Using npm to install dependencies..."
 }
 
-@test "worktree_add_without_ide.sh shows default package manager message" {
+@test "shows default package manager message" {
     local worktree_name="feature-no-ide"
     
     run bash -c "cd $TEST_REPO_DIR && echo '' | $GIT_SCRIPTS_PATH/worktree_add_without_ide.sh $worktree_name"
@@ -103,7 +103,7 @@ teardown() {
     assert_output --partial "Package manager not specified, using yarn to install dependencies..."
 }
 
-@test "worktree_add_without_ide.sh handles branch names with hyphens and underscores" {
+@test "handles branch names with hyphens and underscores" {
     local worktree_name="feature-ui-update_v2"
     
     run bash -c "cd $TEST_REPO_DIR && echo '' | $GIT_SCRIPTS_PATH/worktree_add_without_ide.sh '$worktree_name'"
@@ -114,7 +114,7 @@ teardown() {
     assert_dir_exists "$TEST_REPO_DIR/../$worktree_name"
 }
 
-@test "worktree_add_without_ide.sh installs dependencies but skips IDE" {
+@test "installs dependencies but skips IDE" {
     local worktree_name="feature-no-ide"
     
     run bash -c "cd $TEST_REPO_DIR && $GIT_SCRIPTS_PATH/worktree_add_without_ide.sh $worktree_name yarn"
@@ -128,7 +128,7 @@ teardown() {
     [ ! -f "$TEST_TEMP_DIR/ide_calls.log" ] || [ ! -s "$TEST_TEMP_DIR/ide_calls.log" ]
 }
 
-@test "worktree_add_without_ide.sh script ends without IDE launch" {
+@test "script ends without IDE launch" {
     local worktree_name="feature-no-ide"
     
     # The script should end cleanly without trying to launch IDE

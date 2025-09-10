@@ -12,7 +12,7 @@ teardown() {
     teardown_test_repo
 }
 
-@test "push_new_branch.sh pushes current branch to remote with upstream" {
+@test "pushes current branch to remote with upstream" {
     # Create and switch to a new branch
     create_branch "new-feature"
     git checkout new-feature
@@ -26,7 +26,7 @@ teardown() {
     assert_mock_called_with "$TEST_TEMP_DIR/git_calls.log" "git push --set-upstream origin new-feature"
 }
 
-@test "push_new_branch.sh works from master branch" {
+@test "works from master branch" {
     # Stay on master branch
     git checkout master
     
@@ -38,7 +38,7 @@ teardown() {
     assert_mock_called_with "$TEST_TEMP_DIR/git_calls.log" "git push --set-upstream origin master"
 }
 
-@test "push_new_branch.sh handles branch names with special characters" {
+@test "handles branch names with special characters" {
     # Create branch with special characters
     create_branch "feature/new-ui"
     git checkout "feature/new-ui"
@@ -51,7 +51,7 @@ teardown() {
     assert_mock_called_with "$TEST_TEMP_DIR/git_calls.log" "git push --set-upstream origin feature/new-ui"
 }
 
-@test "push_new_branch.sh works with long branch names" {
+@test "works with long branch names" {
     # Create branch with long name
     local long_branch_name="very-long-branch-name-with-many-words-and-dashes"
     create_branch "$long_branch_name"
@@ -65,7 +65,7 @@ teardown() {
     assert_mock_called_with "$TEST_TEMP_DIR/git_calls.log" "git push --set-upstream origin $long_branch_name"
 }
 
-@test "push_new_branch.sh detects current branch correctly" {
+@test "detects current branch correctly" {
     # Create multiple branches
     create_branch "branch-1"
     create_branch "branch-2"
@@ -86,7 +86,7 @@ teardown() {
     assert_output ""
 }
 
-@test "push_new_branch.sh script is simple and direct" {
+@test "script is simple and direct" {
     # This test verifies the script's simplicity - it should just get current branch and push
     create_branch "simple-test"
     git checkout "simple-test"
@@ -101,7 +101,7 @@ teardown() {
     assert_equal "$push_count" "1"
 }
 
-@test "push_new_branch.sh uses correct upstream syntax" {
+@test "uses correct upstream syntax" {
     create_branch "test-upstream"
     git checkout "test-upstream"
     

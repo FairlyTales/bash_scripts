@@ -10,7 +10,7 @@ teardown() {
     teardown_test_repo
 }
 
-@test "branch_delete.sh shows message when no branches to delete" {
+@test "shows message when no branches to delete" {
     # Only master branch exists (no other branches)
     run "$GIT_SCRIPTS_PATH/branch_delete.sh" <<< ""
     
@@ -18,7 +18,7 @@ teardown() {
     assert_output --partial "No branches to delete (other than master/main)."
 }
 
-@test "branch_delete.sh lists available branches excluding master/main" {
+@test "lists available branches excluding master/main" {
     create_branch "feature-1"
     create_branch "feature-2"
     create_branch "bugfix-1"
@@ -36,7 +36,7 @@ teardown() {
     assert_output "0"
 }
 
-@test "branch_delete.sh cancels when Enter is pressed" {
+@test "cancels when Enter is pressed" {
     create_branch "feature-1"
     
     run "$GIT_SCRIPTS_PATH/branch_delete.sh" <<< ""
@@ -45,7 +45,7 @@ teardown() {
     assert_output --partial "Cancelled."
 }
 
-@test "branch_delete.sh deletes selected branch successfully" {
+@test "deletes selected branch successfully" {
     create_branch "feature-to-delete"
     create_branch "feature-to-keep"
     
@@ -60,7 +60,7 @@ teardown() {
     assert_branch_exists "feature-to-keep"
 }
 
-@test "branch_delete.sh prevents deletion of current branch" {
+@test "prevents deletion of current branch" {
     create_branch "current-branch"
     
     # Switch to the branch we want to try to delete
@@ -76,7 +76,7 @@ teardown() {
     assert_branch_exists "current-branch"
 }
 
-@test "branch_delete.sh handles invalid index - non-numeric" {
+@test "handles invalid index - non-numeric" {
     create_branch "feature-1"
     
     run bash -c "echo 'abc' | $GIT_SCRIPTS_PATH/branch_delete.sh"
@@ -85,7 +85,7 @@ teardown() {
     assert_output --partial "Error. Invalid index."
 }
 
-@test "branch_delete.sh handles invalid index - too low" {
+@test "handles invalid index - too low" {
     create_branch "feature-1"
     
     run bash -c "echo '0' | $GIT_SCRIPTS_PATH/branch_delete.sh"
@@ -94,7 +94,7 @@ teardown() {
     assert_output --partial "Error. Invalid index."
 }
 
-@test "branch_delete.sh handles invalid index - too high" {
+@test "handles invalid index - too high" {
     create_branch "feature-1"
     
     # Only 1 branch, so index 5 is too high
@@ -104,7 +104,7 @@ teardown() {
     assert_output --partial "Error. Invalid index."
 }
 
-@test "branch_delete.sh handles force delete when branch not fully merged" {
+@test "handles force delete when branch not fully merged" {
     create_branch "unmerged-branch"
     
     # Switch to the unmerged branch and make changes
@@ -123,7 +123,7 @@ teardown() {
     [ $status -eq 0 ] || [ $status -eq 1 ]  # Either success or expected failure
 }
 
-@test "branch_delete.sh shows updated branch list after deletion" {
+@test "shows updated branch list after deletion" {
     create_branch "branch-to-delete"
     create_branch "branch-to-keep"
     

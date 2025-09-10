@@ -10,7 +10,7 @@ teardown() {
     teardown_test_repo
 }
 
-@test "get_list_of_worktrees.sh shows message when no worktrees exist" {
+@test "shows message when no worktrees exist" {
     # Only master branch, no worktrees
     run "$GIT_SCRIPTS_PATH/get_list_of_worktrees.sh"
     
@@ -18,7 +18,7 @@ teardown() {
     assert_output --partial "There are no worktrees"
 }
 
-@test "get_list_of_worktrees.sh lists existing worktrees" {
+@test "lists existing worktrees" {
     # Create some branches and worktrees
     create_test_worktree "feature-1"
     create_test_worktree "feature-2"
@@ -31,7 +31,7 @@ teardown() {
     assert_output --partial "feature-2"
 }
 
-@test "get_list_of_worktrees.sh excludes master branch" {
+@test "excludes master branch" {
     # Create some branches and worktrees
     create_test_worktree "feature-1"
     create_test_worktree "master-like"  # Has 'master' in name but should be included
@@ -48,7 +48,7 @@ teardown() {
     assert_output "0"
 }
 
-@test "get_list_of_worktrees.sh handles branches without worktrees" {
+@test "handles branches without worktrees" {
     # Create branches but no worktrees for them
     create_branch "no-worktree-1"
     create_branch "no-worktree-2"
@@ -66,7 +66,7 @@ teardown() {
     assert_output ""
 }
 
-@test "get_list_of_worktrees.sh formats output correctly" {
+@test "formats output correctly" {
     create_test_worktree "test-worktree"
     
     run "$GIT_SCRIPTS_PATH/get_list_of_worktrees.sh"
@@ -78,7 +78,7 @@ teardown() {
     assert_line --index 0 "test-worktree"
 }
 
-@test "get_list_of_worktrees.sh handles multiple worktrees correctly" {
+@test "handles multiple worktrees correctly" {
     # Create several worktrees
     create_test_worktree "worktree-1"
     create_test_worktree "worktree-2"
@@ -94,7 +94,7 @@ teardown() {
     assert_equal "$worktree_count" "3"
 }
 
-@test "get_list_of_worktrees.sh handles worktrees with special characters" {
+@test "handles worktrees with special characters" {
     # Create worktrees with various naming patterns
     create_test_worktree "feature/new-ui"
     create_test_worktree "fix-bug-123"

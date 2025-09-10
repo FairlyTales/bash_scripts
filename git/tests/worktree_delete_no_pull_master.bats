@@ -12,7 +12,7 @@ teardown() {
     teardown_test_repo
 }
 
-@test "worktree_delete_no_pull_master.sh shows list of worktrees for deletion" {
+@test "shows list of worktrees for deletion" {
     # Create some worktrees
     create_test_worktree "feature-1"
     create_test_worktree "feature-2"
@@ -25,7 +25,7 @@ teardown() {
     assert_output --partial "[2] feature-2"
 }
 
-@test "worktree_delete_no_pull_master.sh cancels when Enter is pressed" {
+@test "cancels when Enter is pressed" {
     create_test_worktree "feature-to-keep"
     
     run bash -c "cd $TEST_REPO_DIR && echo '' | $GIT_SCRIPTS_PATH/worktree_delete_no_pull_master.sh"
@@ -34,7 +34,7 @@ teardown() {
     # Script doesn't show explicit cancellation message, just exits
 }
 
-@test "worktree_delete_no_pull_master.sh deletes selected worktree and branch" {
+@test "deletes selected worktree and branch" {
     create_test_worktree "feature-to-delete"
     create_test_worktree "feature-to-keep"
     
@@ -52,7 +52,7 @@ teardown() {
     fi
 }
 
-@test "worktree_delete_no_pull_master.sh does NOT update master branch" {
+@test "does NOT update master branch" {
     create_test_worktree "feature-no-master-update"
     
     run bash -c "cd $TEST_REPO_DIR && echo '1' | $GIT_SCRIPTS_PATH/worktree_delete_no_pull_master.sh"
@@ -68,7 +68,7 @@ teardown() {
     fi
 }
 
-@test "worktree_delete_no_pull_master.sh handles invalid index - no ref found" {
+@test "handles invalid index - no ref found" {
     create_test_worktree "feature-1"
     
     # Try to delete with index that doesn't exist
@@ -78,7 +78,7 @@ teardown() {
     assert_output --partial "Error. No ref with such index found"
 }
 
-@test "worktree_delete_no_pull_master.sh cleans worktree before deletion" {
+@test "cleans worktree before deletion" {
     create_test_worktree "feature-to-clean"
     
     # Add some changes to the worktree
@@ -98,7 +98,7 @@ teardown() {
     fi
 }
 
-@test "worktree_delete_no_pull_master.sh calls get_list_of_worktrees.sh after deletion" {
+@test "calls get_list_of_worktrees.sh after deletion" {
     create_test_worktree "feature-for-list-update"
     
     # Mock the get_list_of_worktrees.sh script
@@ -123,7 +123,7 @@ EOF
     fi
 }
 
-@test "worktree_delete_no_pull_master.sh handles worktree that doesn't match any existing worktree" {
+@test "handles worktree that doesn't match any existing worktree" {
     # Create branch but no worktree for it
     create_branch "branch-no-worktree"
     
@@ -134,7 +134,7 @@ EOF
     assert_output --partial "Error. No worktree with such index found"
 }
 
-@test "worktree_delete_no_pull_master.sh shows worktree deletion steps without master update" {
+@test "shows worktree deletion steps without master update" {
     create_test_worktree "feature-deletion-steps"
     
     run bash -c "cd $TEST_REPO_DIR && echo '1' | $GIT_SCRIPTS_PATH/worktree_delete_no_pull_master.sh"
@@ -157,7 +157,7 @@ EOF
     [ $original_status -eq 0 ] || [ $original_status -ne 0 ]
 }
 
-@test "worktree_delete_no_pull_master.sh excludes master branch from worktree list" {
+@test "excludes master branch from worktree list" {
     # Create worktrees but ensure master is not listed for deletion
     create_test_worktree "feature-1"
     
@@ -169,7 +169,7 @@ EOF
     assert_output ""
 }
 
-@test "worktree_delete_no_pull_master.sh differs from worktree_delete.sh by skipping master pull" {
+@test "differs from worktree_delete.sh by skipping master pull" {
     create_test_worktree "feature-comparison"
     
     # Run the no-pull version

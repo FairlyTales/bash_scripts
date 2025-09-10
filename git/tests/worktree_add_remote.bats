@@ -14,7 +14,7 @@ teardown() {
     teardown_test_repo
 }
 
-@test "worktree_add_remote.sh fetches and creates worktree from remote branch" {
+@test "fetches and creates worktree from remote branch" {
     local branch_name="remote-feature"
     
     # Create the remote branch first
@@ -35,7 +35,7 @@ teardown() {
     assert_mock_called_with "$TEST_TEMP_DIR/package_manager_calls.log" "yarn install"
 }
 
-@test "worktree_add_remote.sh uses specified package manager" {
+@test "uses specified package manager" {
     local branch_name="remote-feature"
     
     # Create the remote branch first
@@ -49,7 +49,7 @@ teardown() {
     assert_mock_called_with "$TEST_TEMP_DIR/package_manager_calls.log" "npm install"
 }
 
-@test "worktree_add_remote.sh copies environment files" {
+@test "copies environment files" {
     local branch_name="remote-feature"
     
     # Create the remote branch first
@@ -71,7 +71,7 @@ teardown() {
     assert_output "AUTH_TOKEN=test_auth"
 }
 
-@test "worktree_add_remote.sh launches IDE after setup" {
+@test "launches IDE after setup" {
     local branch_name="remote-feature"
     
     # Create the remote branch first
@@ -86,7 +86,7 @@ teardown() {
     assert_mock_called_with "$TEST_TEMP_DIR/ide_calls.log" "mock IDE launcher called"
 }
 
-@test "worktree_add_remote.sh handles branch names with special characters" {
+@test "handles branch names with special characters" {
     local branch_name="feature/remote-ui"
     
     # Create the remote branch first
@@ -100,7 +100,7 @@ teardown() {
     assert_dir_exists "$TEST_REPO_DIR/$branch_name"
 }
 
-@test "worktree_add_remote.sh shows package manager message" {
+@test "shows package manager message" {
     local branch_name="remote-feature"
     
     # Create the remote branch first
@@ -112,7 +112,7 @@ teardown() {
     assert_output --partial "Using npm to install dependencies..."
 }
 
-@test "worktree_add_remote.sh shows default package manager message" {
+@test "shows default package manager message" {
     local branch_name="remote-feature"
     
     # Create the remote branch first
@@ -124,7 +124,7 @@ teardown() {
     assert_output --partial "Package manager not specified, using yarn to install dependencies..."
 }
 
-@test "worktree_add_remote.sh runs from repository root" {
+@test "runs from repository root" {
     # This script should be run from repository root, not from master worktree
     local branch_name="remote-feature"
     
@@ -141,7 +141,7 @@ teardown() {
     assert_mock_called_with "$TEST_TEMP_DIR/git_calls.log" "git fetch"
 }
 
-@test "worktree_add_remote.sh creates worktree for existing remote branch" {
+@test "creates worktree for existing remote branch" {
     local branch_name="existing-remote"
     
     # Create the remote branch first

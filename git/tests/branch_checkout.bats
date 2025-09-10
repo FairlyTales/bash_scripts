@@ -10,7 +10,7 @@ teardown() {
     teardown_test_repo
 }
 
-@test "branch_checkout.sh shows message when no branches exist" {
+@test "shows message when no branches exist" {
     # Remove all branches except current (should be master/main)
     # This test runs on a fresh repo which only has master/main
     local current_branch=$(git branch --show-current)
@@ -30,7 +30,7 @@ teardown() {
     assert_output --partial "No branches to checkout."
 }
 
-@test "branch_checkout.sh lists available branches" {
+@test "lists available branches" {
     create_branch "feature-1"
     create_branch "feature-2" 
     create_branch "bugfix-1"
@@ -47,7 +47,7 @@ teardown() {
     assert_output --partial "[4] master"
 }
 
-@test "branch_checkout.sh cancels when Enter is pressed" {
+@test "cancels when Enter is pressed" {
     create_branch "feature-1"
     
     run "$GIT_SCRIPTS_PATH/branch_checkout.sh" <<< ""
@@ -56,7 +56,7 @@ teardown() {
     assert_output --partial "Cancelled."
 }
 
-@test "branch_checkout.sh checks out selected branch" {
+@test "checks out selected branch" {
     create_branch "feature-1"
     create_branch "feature-2"
     
@@ -68,7 +68,7 @@ teardown() {
     assert_current_branch "feature-2"
 }
 
-@test "branch_checkout.sh checks out master branch" {
+@test "checks out master branch" {
     create_branch "feature-1"
     create_branch "feature-2"
     
@@ -82,7 +82,7 @@ teardown() {
     assert_current_branch "master"
 }
 
-@test "branch_checkout.sh fails with invalid index - non-numeric" {
+@test "fails with invalid index - non-numeric" {
     create_branch "feature-1"
     
     run bash -c "echo 'abc' | $GIT_SCRIPTS_PATH/branch_checkout.sh"
@@ -91,7 +91,7 @@ teardown() {
     assert_output --partial "Error. Invalid index."
 }
 
-@test "branch_checkout.sh fails with invalid index - too low" {
+@test "fails with invalid index - too low" {
     create_branch "feature-1"
     
     run bash -c "echo '0' | $GIT_SCRIPTS_PATH/branch_checkout.sh"
@@ -100,7 +100,7 @@ teardown() {
     assert_output --partial "Error. Invalid index."
 }
 
-@test "branch_checkout.sh fails with invalid index - too high" {
+@test "fails with invalid index - too high" {
     create_branch "feature-1"
     
     # There should be 2 branches (feature-1 and master), so index 5 is too high
@@ -110,7 +110,7 @@ teardown() {
     assert_output --partial "Error. Invalid index."
 }
 
-@test "branch_checkout.sh handles branch names with special characters" {
+@test "handles branch names with special characters" {
     create_branch "feature/new-ui"
     create_branch "fix-bug-#123"
     

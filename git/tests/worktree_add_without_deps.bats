@@ -13,7 +13,7 @@ teardown() {
     teardown_test_repo
 }
 
-@test "worktree_add_without_deps.sh creates worktree without installing dependencies" {
+@test "creates worktree without installing dependencies" {
     local worktree_name="feature-no-deps"
     
     run bash -c "cd $TEST_REPO_DIR && $GIT_SCRIPTS_PATH/worktree_add_without_deps.sh $worktree_name"
@@ -27,7 +27,7 @@ teardown() {
     [ ! -f "$TEST_TEMP_DIR/package_manager_calls.log" ] || [ ! -s "$TEST_TEMP_DIR/package_manager_calls.log" ]
 }
 
-@test "worktree_add_without_deps.sh copies environment files" {
+@test "copies environment files" {
     local worktree_name="feature-no-deps"
     
     run bash -c "cd $TEST_REPO_DIR && $GIT_SCRIPTS_PATH/worktree_add_without_deps.sh $worktree_name"
@@ -46,7 +46,7 @@ teardown() {
     assert_output "AUTH_TOKEN=test_auth"
 }
 
-@test "worktree_add_without_deps.sh launches IDE after setup" {
+@test "launches IDE after setup" {
     local worktree_name="feature-no-deps"
     
     run bash -c "cd $TEST_REPO_DIR && $GIT_SCRIPTS_PATH/worktree_add_without_deps.sh $worktree_name"
@@ -58,7 +58,7 @@ teardown() {
     assert_mock_called_with "$TEST_TEMP_DIR/ide_calls.log" "mock IDE launcher called"
 }
 
-@test "worktree_add_without_deps.sh creates git worktree successfully" {
+@test "creates git worktree successfully" {
     local worktree_name="feature-no-deps"
     
     run bash -c "cd $TEST_REPO_DIR && $GIT_SCRIPTS_PATH/worktree_add_without_deps.sh $worktree_name"
@@ -74,7 +74,7 @@ teardown() {
     assert_output "$worktree_name"
 }
 
-@test "worktree_add_without_deps.sh handles branch names with special characters" {
+@test "handles branch names with special characters" {
     local worktree_name="feature/no-deps-ui"
     
     run bash -c "cd $TEST_REPO_DIR && $GIT_SCRIPTS_PATH/worktree_add_without_deps.sh '$worktree_name'"
@@ -85,7 +85,7 @@ teardown() {
     assert_dir_exists "$TEST_REPO_DIR/../$worktree_name"
 }
 
-@test "worktree_add_without_deps.sh skips package installation completely" {
+@test "skips package installation completely" {
     local worktree_name="feature-no-deps"
     
     run bash -c "cd $TEST_REPO_DIR && $GIT_SCRIPTS_PATH/worktree_add_without_deps.sh $worktree_name"
@@ -100,7 +100,7 @@ teardown() {
     [ ! -f "$TEST_TEMP_DIR/package_manager_calls.log" ] || [ ! -s "$TEST_TEMP_DIR/package_manager_calls.log" ]
 }
 
-@test "worktree_add_without_deps.sh copies gemini directory recursively" {
+@test "copies gemini directory recursively" {
     local worktree_name="feature-no-deps"
     
     # Add content to gemini directory
@@ -121,7 +121,7 @@ teardown() {
     assert_output "gemini sub content"
 }
 
-@test "worktree_add_without_deps.sh is faster than regular worktree_add" {
+@test "is faster than regular worktree_add" {
     local worktree_name="feature-no-deps"
     
     # This test conceptually verifies that the script skips time-consuming operations

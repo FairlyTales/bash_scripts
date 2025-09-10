@@ -13,7 +13,7 @@ teardown() {
     teardown_test_repo
 }
 
-@test "worktree_add.sh creates worktree with default package manager" {
+@test "creates worktree with default package manager" {
     local worktree_name="feature-branch"
     
     # Mock the relative path to ide script
@@ -31,7 +31,7 @@ teardown() {
     assert_mock_called_with "$TEST_TEMP_DIR/package_manager_calls.log" "yarn install"
 }
 
-@test "worktree_add.sh creates worktree with specified package manager" {
+@test "creates worktree with specified package manager" {
     local worktree_name="feature-branch"
     
     # Mock the relative path to ide script  
@@ -49,7 +49,7 @@ teardown() {
     assert_mock_called_with "$TEST_TEMP_DIR/package_manager_calls.log" "npm install"
 }
 
-@test "worktree_add.sh copies environment files" {
+@test "copies environment files" {
     local worktree_name="feature-branch"
     
     # Mock the relative path to ide script
@@ -71,7 +71,7 @@ teardown() {
     assert_output "AUTH_TOKEN=test_auth"
 }
 
-@test "worktree_add.sh launches IDE" {
+@test "launches IDE" {
     local worktree_name="feature-branch"
     
     # Mock the relative path to ide script
@@ -87,7 +87,7 @@ teardown() {
     assert_output "mock IDE launcher called"
 }
 
-@test "worktree_add.sh creates git worktree successfully" {
+@test "creates git worktree successfully" {
     local worktree_name="feature-branch"
     
     # Mock the relative path to ide script

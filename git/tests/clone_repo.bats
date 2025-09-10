@@ -15,7 +15,7 @@ teardown() {
     rm -rf cloned_*
 }
 
-@test "clone_repo.sh clones repo with provided directory name" {
+@test "clones repo with provided directory name" {
     cd "$TEST_TEMP_DIR"
     
     run bash -c "echo -e 'testuser\ntestuser@example.com\nN' | $GIT_SCRIPTS_PATH/clone_repo.sh https://github.com/test/repo.git test_repo"
@@ -30,7 +30,7 @@ teardown() {
     assert_dir_exists "test_repo"
 }
 
-@test "clone_repo.sh prompts for directory name when not provided" {
+@test "prompts for directory name when not provided" {
     cd "$TEST_TEMP_DIR"
     
     run bash -c "echo -e 'my_project\ntestuser\ntestuser@example.com\nN' | $GIT_SCRIPTS_PATH/clone_repo.sh https://github.com/test/repo.git"
@@ -43,7 +43,7 @@ teardown() {
     assert_dir_exists "my_project"
 }
 
-@test "clone_repo.sh installs dependencies with specified package manager" {
+@test "installs dependencies with specified package manager" {
     cd "$TEST_TEMP_DIR"
     
     run bash -c "echo -e 'testuser\ntestuser@example.com\nN' | $GIT_SCRIPTS_PATH/clone_repo.sh https://github.com/test/repo.git test_repo npm"
@@ -54,7 +54,7 @@ teardown() {
     assert_mock_called_with "$TEST_TEMP_DIR/package_manager_calls.log" "npm install"
 }
 
-@test "clone_repo.sh installs dependencies with yarn when specified as argument" {
+@test "installs dependencies with yarn when specified as argument" {
     cd "$TEST_TEMP_DIR"
     
     run zsh -c "printf 'testuser\ntestuser@example.com\nN' | $GIT_SCRIPTS_PATH/clone_repo.sh https://github.com/test/repo.git test_repo yarn"
@@ -65,7 +65,7 @@ teardown() {
     assert_mock_called_with "$TEST_TEMP_DIR/package_manager_calls.log" "yarn install"
 }
 
-@test "clone_repo.sh installs dependencies with npm when specified as argument" {
+@test "installs dependencies with npm when specified as argument" {
     cd "$TEST_TEMP_DIR"
     
     run zsh -c "printf 'testuser\ntestuser@example.com\nN' | $GIT_SCRIPTS_PATH/clone_repo.sh https://github.com/test/repo.git test_repo npm"
@@ -76,7 +76,7 @@ teardown() {
     assert_mock_called_with "$TEST_TEMP_DIR/package_manager_calls.log" "npm install"
 }
 
-@test "clone_repo.sh skips package installation when user presses Enter" {
+@test "skips package installation when user presses Enter" {
     cd "$TEST_TEMP_DIR"
     
     run bash -c "echo -e 'testuser\ntestuser@example.com\n\nN' | $GIT_SCRIPTS_PATH/clone_repo.sh https://github.com/test/repo.git test_repo"
@@ -87,7 +87,7 @@ teardown() {
     [ ! -f "$TEST_TEMP_DIR/package_manager_calls.log" ] || [ ! -s "$TEST_TEMP_DIR/package_manager_calls.log" ]
 }
 
-@test "clone_repo.sh sets git user name and email" {
+@test "sets git user name and email" {
     cd "$TEST_TEMP_DIR"
     
     run bash -c "echo -e '\ntestuser\ntestuser@example.com\nN' | $GIT_SCRIPTS_PATH/clone_repo.sh https://github.com/test/repo.git test_repo"
@@ -100,7 +100,7 @@ teardown() {
     assert_git_config "user.email" "testuser@example.com"
 }
 
-@test "clone_repo.sh uses global config when Enter is pressed for user info" {
+@test "uses global config when Enter is pressed for user info" {
     cd "$TEST_TEMP_DIR"
     
     # Set global config first
@@ -117,7 +117,7 @@ teardown() {
     # But the test verifies the script runs successfully
 }
 
-@test "clone_repo.sh launches IDE when user selects Y" {
+@test "launches IDE when user selects Y" {
     cd "$TEST_TEMP_DIR"
     
     run bash -c "echo -e '\ntestuser\ntestuser@example.com\nY' | $GIT_SCRIPTS_PATH/clone_repo.sh https://github.com/test/repo.git test_repo"
@@ -129,7 +129,7 @@ teardown() {
     assert_mock_called_with "$TEST_TEMP_DIR/ide_calls.log" "mock IDE launcher called"
 }
 
-@test "clone_repo.sh skips IDE launch when user selects N" {
+@test "skips IDE launch when user selects N" {
     cd "$TEST_TEMP_DIR"
     
     run bash -c "echo -e 'testuser\ntestuser@example.com\nN' | $GIT_SCRIPTS_PATH/clone_repo.sh https://github.com/test/repo.git test_repo"
@@ -140,7 +140,7 @@ teardown() {
     [ ! -f "$TEST_TEMP_DIR/ide_calls.log" ] || [ ! -s "$TEST_TEMP_DIR/ide_calls.log" ]
 }
 
-@test "clone_repo.sh shows success message" {
+@test "shows success message" {
     cd "$TEST_TEMP_DIR"
     
     run bash -c "echo -e 'testuser\ntestuser@example.com\nN' | $GIT_SCRIPTS_PATH/clone_repo.sh https://github.com/test/repo.git test_repo"

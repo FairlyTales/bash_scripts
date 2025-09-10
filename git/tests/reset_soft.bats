@@ -10,7 +10,7 @@ teardown() {
     teardown_test_repo
 }
 
-@test "reset_soft.sh resets 1 commit by default" {
+@test "resets 1 commit by default" {
     # Create additional commits
     echo "second commit" > file2.txt
     git add file2.txt
@@ -37,7 +37,7 @@ teardown() {
     assert_output --partial "A  file3.txt"
 }
 
-@test "reset_soft.sh resets specified number of commits" {
+@test "resets specified number of commits" {
     # Create additional commits
     for i in {2..4}; do
         echo "commit $i" > "file$i.txt"
@@ -62,28 +62,28 @@ teardown() {
     assert_output --partial "A  file4.txt"
 }
 
-@test "reset_soft.sh fails with invalid argument" {
+@test "fails with invalid argument" {
     run "$GIT_SCRIPTS_PATH/reset_soft.sh" "abc"
     
     assert_failure
     assert_output --partial "Error: Argument must be a positive integer."
 }
 
-@test "reset_soft.sh fails with negative number" {
+@test "fails with negative number" {
     run "$GIT_SCRIPTS_PATH/reset_soft.sh" "-1"
     
     assert_failure
     assert_output --partial "Error: Argument must be a positive integer."
 }
 
-@test "reset_soft.sh fails with zero" {
+@test "fails with zero" {
     run "$GIT_SCRIPTS_PATH/reset_soft.sh" "0"
     
     assert_failure
     assert_output --partial "Error: Argument must be a positive integer."
 }
 
-@test "reset_soft.sh works with multiple digit numbers" {
+@test "works with multiple digit numbers" {
     # Create 15 commits
     for i in {2..16}; do
         echo "commit $i" > "file$i.txt"
