@@ -40,7 +40,8 @@ run_test_directory() {
     
     echo -e "${CYAN}Running $test_name tests...${NC}"
     echo "Test directory: $test_dir"
-    echo "Test files: ${test_file_array[@]##*/}"
+    echo "Test files:"
+    printf '  - %s\n' "${test_file_array[@]##*/}"
     echo
     
     local failed_files=0
