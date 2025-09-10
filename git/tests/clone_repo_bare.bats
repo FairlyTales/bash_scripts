@@ -285,7 +285,18 @@ EOF
 @test "creates worktree with project name and branch" {
     cd "$TEST_TEMP_DIR"
     
-    run bash -c "echo -e 'develop\n\ntestuser\ntestuser@example.com' | $GIT_SCRIPTS_PATH/clone_repo_bare.sh https://github.com/test/repo.git myproject"
+    run expect -c "
+        spawn $GIT_SCRIPTS_PATH/clone_repo_bare.sh https://github.com/test/repo.git myproject
+        expect \"Specify the master branch name\"
+        send \"develop\\r\"
+        expect \"Specify package manager:\"
+        send \"\\r\"
+        expect \"Type user name\"
+        send \"testuser\\r\"
+        expect \"Type user email\"
+        send \"testuser@example.com\\r\"
+        expect eof
+    "
     
     assert_success
     
