@@ -7,11 +7,71 @@ YELLOW='\033[1;33m'
 CYAN='\033[0;36m'
 NC='\033[0m' # No Color
 
+# Spinner animation
+SPINNER_PID=""
+spinner_chars="⠋⠙⠹⠸⠼⠴⠦⠧⠇⠏"
+
+start_spinner() {
+    local message="$1"
+    tput civis # Hide cursor
+    (
+        i=0
+        while true; do
+            printf "\r${CYAN}%s %s${NC}" "${spinner_chars:$i:1}" "$message"
+            i=$(( (i + 1) % ${#spinner_chars} ))
+            sleep 0.1
+        done
+    ) &
+    SPINNER_PID=$!
+}
+
+stop_spinner() {
+    if [ -n "$SPINNER_PID" ]; then
+        kill "$SPINNER_PID" 2>/dev/null
+        wait "$SPINNER_PID" 2>/dev/null
+        SPINNER_PID=""
+    fi
+    printf "\r\033[K" # Clear the entire line
+    tput cnorm # Show cursor
+}
+
+# Cleanup function for spinner
+cleanup_spinner() {
+    stop_spinner
+    exit
+}
+
+# Trap to ensure spinner cleanup on interruption
+trap cleanup_spinner INT TERM
+
 # Script directory
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
 ROOT_DIR="$(dirname "$SCRIPT_DIR")"
 
 echo -e "${CYAN}=== Bash Scripts Test Suite ===${NC}"
+echo
+
+# Display test directories that will be run
+echo -e "${CYAN}Test directories to run:${NC}"
+test_dirs_found=0
+if [ -d "$ROOT_DIR/git/tests" ]; then
+    echo "  - Git Scripts ($ROOT_DIR/git/tests)"
+    test_dirs_found=$((test_dirs_found + 1))
+fi
+if [ -d "$ROOT_DIR/utility/tests" ]; then
+    echo "  - Utility Scripts ($ROOT_DIR/utility/tests)"
+    test_dirs_found=$((test_dirs_found + 1))
+fi
+if [ -d "$ROOT_DIR/ide/tests" ]; then
+    echo "  - IDE Scripts ($ROOT_DIR/ide/tests)"
+    test_dirs_found=$((test_dirs_found + 1))
+fi
+
+if [ $test_dirs_found -eq 0 ]; then
+    echo -e "${YELLOW}  No test directories found${NC}"
+    exit 1
+fi
+
 echo
 
 # Check if bats is installed
@@ -51,15 +111,19 @@ run_test_directory() {
     
     for test_file in "${test_file_array[@]}"; do
         local file_name=$(basename "$test_file")
-        echo -e "${CYAN}Running $file_name...${NC}"
+        
+        # Start spinner animation
+        start_spinner "Running $file_name..."
         
         # Run bats with TAP format to get individual test results
         local tap_output=""
         if tap_output=$(bats --tap "$test_file" 2>&1); then
-            # File passed overall
+            # Stop spinner and show success
+            stop_spinner
             echo -e "${GREEN}✓ $file_name passed${NC}"
         else
-            # File failed overall
+            # Stop spinner and show failure
+            stop_spinner
             echo -e "${RED}✗ $file_name failed${NC}"
             failed_files=$((failed_files + 1))
         fi
