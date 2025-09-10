@@ -5,7 +5,7 @@ load test_helper
 setup() {
     create_test_repo
     setup_all_mocks
-    create_test_env_files "$TEST_REPO_DIR/.."
+    create_test_env_files "$TEST_REPO_DIR"
     create_fake_remote
 }
 
@@ -30,7 +30,7 @@ teardown() {
     assert_mock_called_with "$TEST_TEMP_DIR/git_calls.log" "git fetch"
     
     # Verify worktree directory was created
-    assert_dir_exists "$TEST_REPO_DIR/../$branch_name"
+    assert_dir_exists "$TEST_REPO_DIR/$branch_name"
     
     # Verify default package manager (yarn) was used
     assert_mock_called_with "$TEST_TEMP_DIR/package_manager_calls.log" "yarn install"
@@ -61,14 +61,14 @@ teardown() {
     assert_success
     
     # Check that environment files were copied
-    assert_file_exists "$TEST_REPO_DIR/../$branch_name/.env.auth"
-    assert_file_exists "$TEST_REPO_DIR/../$branch_name/.env.local"
-    assert_file_exists "$TEST_REPO_DIR/../$branch_name/.env"
-    assert_dir_exists "$TEST_REPO_DIR/../$branch_name/.gemini"
-    assert_file_exists "$TEST_REPO_DIR/../$branch_name/.aider.conf.yml"
+    assert_file_exists "$TEST_REPO_DIR/$branch_name/.env.auth"
+    assert_file_exists "$TEST_REPO_DIR/$branch_name/.env.local"
+    assert_file_exists "$TEST_REPO_DIR/$branch_name/.env"
+    assert_dir_exists "$TEST_REPO_DIR/$branch_name/.gemini"
+    assert_file_exists "$TEST_REPO_DIR/$branch_name/.aider.conf.yml"
     
     # Verify content of copied files
-    run cat "$TEST_REPO_DIR/../$branch_name/.env.auth"
+    run cat "$TEST_REPO_DIR/$branch_name/.env.auth"
     assert_output "AUTH_TOKEN=test_auth"
 }
 
@@ -98,7 +98,7 @@ teardown() {
     assert_success
     
     # Verify worktree was created with correct name
-    assert_dir_exists "$TEST_REPO_DIR/../$branch_name"
+    assert_dir_exists "$TEST_REPO_DIR/$branch_name"
 }
 
 @test "worktree_add_remote.sh shows package manager message" {
@@ -155,5 +155,5 @@ teardown() {
     
     # The git worktree add command should be attempted
     # In our mock environment, this will succeed
-    assert_dir_exists "$TEST_REPO_DIR/../$branch_name"
+    assert_dir_exists "$TEST_REPO_DIR/$branch_name"
 }
