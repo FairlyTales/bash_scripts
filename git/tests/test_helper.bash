@@ -325,6 +325,29 @@ mock_user_input() {
     echo "$input"
 }
 
+# Setup isolated test environment with mock directory structure
+setup_test_environment() {
+    # Create mock directory structure in test temp directory
+    export TEST_ROOT_SCRIPTS_PATH="$TEST_TEMP_DIR/mock_scripts"
+    mkdir -p "$TEST_ROOT_SCRIPTS_PATH/ide"
+    mkdir -p "$TEST_ROOT_SCRIPTS_PATH/git"
+    
+    # Copy git scripts to mock location for testing
+    cp -r /Users/user/bash_scripts/git/* "$TEST_ROOT_SCRIPTS_PATH/git/"
+    
+    # Create mock IDE launcher in test location
+    cat > "$TEST_ROOT_SCRIPTS_PATH/ide/launch_current_ide_in_pwd.sh" << 'EOF'
+#!/usr/bin/env bash
+echo "mock IDE launcher called" >> "$TEST_TEMP_DIR/ide_calls.log"
+exit 0
+EOF
+    chmod +x "$TEST_ROOT_SCRIPTS_PATH/ide/launch_current_ide_in_pwd.sh"
+    
+    # Override paths to use test environment
+    export ROOT_SCRIPTS_PATH="$TEST_ROOT_SCRIPTS_PATH"
+    export GIT_SCRIPTS_PATH="$ROOT_SCRIPTS_PATH/git"
+}
+
 # Setup comprehensive mocks for all external tools
 setup_all_mocks() {
     setup_package_manager_mocks
@@ -334,15 +357,4 @@ setup_all_mocks() {
     rm -f "$TEST_TEMP_DIR/git_calls.log"
     rm -f "$TEST_TEMP_DIR/package_manager_calls.log"
     rm -f "$TEST_TEMP_DIR/ide_calls.log"
-    
-    # Create mock IDE launcher if needed
-    if [ ! -f "$ROOT_SCRIPTS_PATH/ide/launch_current_ide_in_pwd.sh" ]; then
-        mkdir -p "$ROOT_SCRIPTS_PATH/ide"
-        cat > "$ROOT_SCRIPTS_PATH/ide/launch_current_ide_in_pwd.sh" << 'EOF'
-#!/usr/bin/env bash
-echo "mock IDE launcher called" >> "$TEST_TEMP_DIR/ide_calls.log"
-exit 0
-EOF
-        chmod +x "$ROOT_SCRIPTS_PATH/ide/launch_current_ide_in_pwd.sh"
-    fi
 }

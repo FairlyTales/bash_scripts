@@ -4,6 +4,7 @@ load test_helper
 
 setup() {
     # Don't create test repo here since we're testing cloning
+    setup_test_environment
     setup_all_mocks
 }
 
@@ -12,9 +13,6 @@ teardown() {
     cd "$TEST_TEMP_DIR"
     rm -rf test_repo*
     rm -rf cloned_*
-    
-    # Clean up mock IDE launcher
-    [ -f "$ROOT_SCRIPTS_PATH/ide/launch_current_ide_in_pwd.sh" ] && rm -f "$ROOT_SCRIPTS_PATH/ide/launch_current_ide_in_pwd.sh"
 }
 
 @test "clone_repo.sh clones repo with provided directory name" {

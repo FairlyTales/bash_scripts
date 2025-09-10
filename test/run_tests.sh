@@ -4,14 +4,14 @@
 RED='\033[0;31m'
 GREEN='\033[0;32m'
 YELLOW='\033[1;33m'
-BLUE='\033[0;34m'
+CYAN='\033[0;36m'
 NC='\033[0m' # No Color
 
 # Script directory
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
 ROOT_DIR="$(dirname "$SCRIPT_DIR")"
 
-echo -e "${BLUE}=== Bash Scripts Test Suite ===${NC}"
+echo -e "${CYAN}=== Bash Scripts Test Suite ===${NC}"
 echo
 
 # Check if bats is installed
@@ -38,7 +38,7 @@ run_test_directory() {
         return 0
     fi
     
-    echo -e "${BLUE}Running $test_name tests...${NC}"
+    echo -e "${CYAN}Running $test_name tests...${NC}"
     echo "Test directory: $test_dir"
     echo "Test files: ${test_file_array[@]##*/}"
     echo
@@ -50,7 +50,7 @@ run_test_directory() {
     
     for test_file in "${test_file_array[@]}"; do
         local file_name=$(basename "$test_file")
-        echo -e "${BLUE}Running $file_name...${NC}"
+        echo -e "${CYAN}Running $file_name...${NC}"
         
         # Run bats with TAP format to get individual test results
         local tap_output
@@ -145,8 +145,8 @@ if [ -d "$ROOT_DIR/ide/tests" ]; then
 fi
 
 # Final results
-echo -e "${BLUE}=== Test Summary ===${NC}"
-echo -e "${BLUE}Total Tests: $total_test_count | Passed: ${#passed_tests[@]} | Failed: ${#failed_tests[@]}${NC}"
+echo -e "${CYAN}=== Test Summary ===${NC}"
+echo -e "${CYAN}Total Tests: $total_test_count | Passed: ${#passed_tests[@]} | Failed: ${#failed_tests[@]}${NC}"
 echo
 
 # Display test suite summary

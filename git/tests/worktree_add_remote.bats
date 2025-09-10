@@ -4,6 +4,7 @@ load test_helper
 
 setup() {
     create_test_repo
+    setup_test_environment
     setup_all_mocks
     create_test_env_files "$TEST_REPO_DIR"
     create_fake_remote
@@ -11,8 +12,6 @@ setup() {
 
 teardown() {
     teardown_test_repo
-    # Clean up mock IDE launcher
-    [ -f "$ROOT_SCRIPTS_PATH/ide/launch_current_ide_in_pwd.sh" ] && rm -f "$ROOT_SCRIPTS_PATH/ide/launch_current_ide_in_pwd.sh"
 }
 
 @test "worktree_add_remote.sh fetches and creates worktree from remote branch" {

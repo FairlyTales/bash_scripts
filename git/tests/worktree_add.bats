@@ -4,23 +4,13 @@ load test_helper
 
 setup() {
     create_test_repo
-    setup_package_manager_mocks
+    setup_test_environment
+    setup_all_mocks
     create_test_env_files "$TEST_REPO_DIR/.."
-    
-    # Create a mock IDE launcher script in the expected location relative to git scripts
-    mkdir -p "$ROOT_SCRIPTS_PATH/ide"
-    cat > "$ROOT_SCRIPTS_PATH/ide/launch_current_ide_in_pwd.sh" << 'EOF'
-#!/usr/bin/env bash
-echo "mock IDE launcher called" >> "$TEST_TEMP_DIR/ide_calls.log"
-exit 0
-EOF
-    chmod +x "$ROOT_SCRIPTS_PATH/ide/launch_current_ide_in_pwd.sh"
 }
 
 teardown() {
     teardown_test_repo
-    # Clean up mock IDE launcher if it exists
-    [ -f "$ROOT_SCRIPTS_PATH/ide/launch_current_ide_in_pwd.sh" ] && rm -f "$ROOT_SCRIPTS_PATH/ide/launch_current_ide_in_pwd.sh"
 }
 
 @test "worktree_add.sh creates worktree with default package manager" {
