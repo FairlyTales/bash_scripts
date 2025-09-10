@@ -18,6 +18,9 @@ teardown() {
 @test "worktree_add_remote.sh fetches and creates worktree from remote branch" {
     local branch_name="remote-feature"
     
+    # Create the remote branch first
+    create_remote_branch "$branch_name"
+    
     run bash -c "cd $TEST_REPO_DIR && $GIT_SCRIPTS_PATH/worktree_add_remote.sh $branch_name"
     
     assert_success
@@ -36,6 +39,9 @@ teardown() {
 @test "worktree_add_remote.sh uses specified package manager" {
     local branch_name="remote-feature"
     
+    # Create the remote branch first
+    create_remote_branch "$branch_name"
+    
     run bash -c "cd $TEST_REPO_DIR && $GIT_SCRIPTS_PATH/worktree_add_remote.sh $branch_name npm"
     
     assert_success
@@ -46,6 +52,9 @@ teardown() {
 
 @test "worktree_add_remote.sh copies environment files" {
     local branch_name="remote-feature"
+    
+    # Create the remote branch first
+    create_remote_branch "$branch_name"
     
     run bash -c "cd $TEST_REPO_DIR && $GIT_SCRIPTS_PATH/worktree_add_remote.sh $branch_name"
     
@@ -66,6 +75,9 @@ teardown() {
 @test "worktree_add_remote.sh launches IDE after setup" {
     local branch_name="remote-feature"
     
+    # Create the remote branch first
+    create_remote_branch "$branch_name"
+    
     run bash -c "cd $TEST_REPO_DIR && $GIT_SCRIPTS_PATH/worktree_add_remote.sh $branch_name"
     
     assert_success
@@ -78,6 +90,9 @@ teardown() {
 @test "worktree_add_remote.sh handles branch names with special characters" {
     local branch_name="feature/remote-ui"
     
+    # Create the remote branch first
+    create_remote_branch "$branch_name"
+    
     run bash -c "cd $TEST_REPO_DIR && $GIT_SCRIPTS_PATH/worktree_add_remote.sh '$branch_name'"
     
     assert_success
@@ -89,6 +104,9 @@ teardown() {
 @test "worktree_add_remote.sh shows package manager message" {
     local branch_name="remote-feature"
     
+    # Create the remote branch first
+    create_remote_branch "$branch_name"
+    
     run bash -c "cd $TEST_REPO_DIR && $GIT_SCRIPTS_PATH/worktree_add_remote.sh $branch_name npm"
     
     assert_success
@@ -97,6 +115,9 @@ teardown() {
 
 @test "worktree_add_remote.sh shows default package manager message" {
     local branch_name="remote-feature"
+    
+    # Create the remote branch first
+    create_remote_branch "$branch_name"
     
     run bash -c "cd $TEST_REPO_DIR && $GIT_SCRIPTS_PATH/worktree_add_remote.sh $branch_name"
     
@@ -107,6 +128,9 @@ teardown() {
 @test "worktree_add_remote.sh runs from repository root" {
     # This script should be run from repository root, not from master worktree
     local branch_name="remote-feature"
+    
+    # Create the remote branch first
+    create_remote_branch "$branch_name"
     
     run bash -c "cd $TEST_REPO_DIR && $GIT_SCRIPTS_PATH/worktree_add_remote.sh $branch_name"
     
@@ -120,6 +144,9 @@ teardown() {
 
 @test "worktree_add_remote.sh creates worktree for existing remote branch" {
     local branch_name="existing-remote"
+    
+    # Create the remote branch first
+    create_remote_branch "$branch_name"
     
     # The script assumes the branch exists on remote after fetch
     run bash -c "cd $TEST_REPO_DIR && $GIT_SCRIPTS_PATH/worktree_add_remote.sh $branch_name"

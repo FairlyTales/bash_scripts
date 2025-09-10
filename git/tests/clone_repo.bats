@@ -92,7 +92,7 @@ teardown() {
 @test "clone_repo.sh sets git user name and email" {
     cd "$TEST_TEMP_DIR"
     
-    run bash -c "echo -e 'testuser\ntestuser@example.com\nN' | $GIT_SCRIPTS_PATH/clone_repo.sh https://github.com/test/repo.git test_repo"
+    run bash -c "echo -e '\ntestuser\ntestuser@example.com\nN' | $GIT_SCRIPTS_PATH/clone_repo.sh https://github.com/test/repo.git test_repo"
     
     assert_success
     
@@ -122,7 +122,7 @@ teardown() {
 @test "clone_repo.sh launches IDE when user selects Y" {
     cd "$TEST_TEMP_DIR"
     
-    run bash -c "echo -e 'testuser\ntestuser@example.com\nY' | $GIT_SCRIPTS_PATH/clone_repo.sh https://github.com/test/repo.git test_repo"
+    run bash -c "echo -e '\ntestuser\ntestuser@example.com\nY' | $GIT_SCRIPTS_PATH/clone_repo.sh https://github.com/test/repo.git test_repo"
     
     assert_success
     

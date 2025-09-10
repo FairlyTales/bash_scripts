@@ -283,6 +283,29 @@ create_fake_remote() {
     echo "$remote_dir"
 }
 
+# Create a remote branch in the fake remote repository
+create_remote_branch() {
+    local branch_name="$1"
+    if [ -z "$branch_name" ]; then
+        echo "Error: branch name required"
+        return 1
+    fi
+    
+    # Create branch locally first
+    git checkout -b "$branch_name"
+    # Create safe filename by replacing special characters with underscores
+    local safe_filename="${branch_name//[\/]/_}.txt"
+    echo "Content for $branch_name" > "$safe_filename"
+    git add "$safe_filename"
+    git commit -m "Add content for $branch_name"
+    
+    # Push to fake remote
+    git push origin "$branch_name"
+    
+    # Switch back to master
+    git checkout master 2>/dev/null || git checkout main
+}
+
 # Check git config values
 assert_git_config() {
     local key="$1"
