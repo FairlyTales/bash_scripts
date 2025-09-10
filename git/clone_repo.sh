@@ -17,7 +17,7 @@ then
     $3 install
 else
     printf "\n\nSpecify package manager:\n[y - yarn]\n[n - npm]\n[Enter - none]\n"
-    read -k packagemanager
+    read packagemanager
     case $packagemanager in
     [Yy]* ) yarn install;;
     [Nn]* ) npm install;;
@@ -34,7 +34,7 @@ read useremail
 git config user.email $useremail
 
 printf "\n\nRepository successfully cloned \\(^_^)/\n\nYou need to manually add cursorrules and aider config to this new project\n\nDo you want to launch IDE in this project? [Y/n]\n"
-read -k yn
+read yn
 
 DIRNAME=$(dirname "$0")
 

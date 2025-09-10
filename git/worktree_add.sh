@@ -1,5 +1,9 @@
 #!/usr/bin/env zsh
 
+# create worktree from current branch
+# this command should be run from the branch you want to create a worktree from
+
+git fetch &&
 git worktree add ../$1 &&
 cd ../$1 &&
 
@@ -12,17 +16,12 @@ else
     yarn install;
 fi
 
-cp ../.env.auth ./.env.auth
-cp ../.env.local ./.env.local
-cp ../.env ./.env
-cp -a ../.gemini ./.gemini
-
-# Cursor rules are under git from 28.05.2025
-# mkdir -p ./.cursor/rules
-# cp -a /Users/user/Documents/Settings/ide/vs_code,cursor/cursor_general_project_rules/ ./.cursor/rules/ # universal rules
-# cp -a ../.project_cursorrules/ ./.cursor/rules/ # project specific rules
-
-cp -a ../.aider.conf.yml ./ # aider rules
+[ -f ../.env.auth ] && cp ../.env.auth ./.env.auth
+[ -f ../.env.local ] && cp ../.env.local ./.env.local
+[ -f ../.env ] && cp ../.env ./.env
+[ -d ../.gemini ] && cp -a ../.gemini ./.gemini
+[ -d ../.mcp_configs ] && cp -R ../.mcp_configs ./.mcp_configs
+[ -f ../.aider.conf.yml ] && cp -a ../.aider.conf.yml ./
 
 DIRNAME=$(dirname "$0")
 $DIRNAME/../ide/launch_current_ide_in_pwd.sh
