@@ -283,8 +283,63 @@ assert_file_contains() {
     fi
 }
 
+# Create mock launch scripts
+create_mock_launch_scripts() {
+    # Mock launch_appshell_dev_server.sh
+    cat > "$TEST_TEMP_DIR/launch_appshell_dev_server.sh" << 'EOF'
+#!/usr/bin/env zsh
+
+# Mock implementation that follows the real script's logic
+echo "appshell $*" >> "$TEST_TEMP_DIR/script_calls.log"
+
+# Check for processes on port 3000
+pid=$(lsof -Pi :3000 -sTCP:LISTEN -t)
+
+if [ ! -z $pid ]
+then
+    printf "Terminating current process on port 3000...\n"
+    kill -15 $pid
+    until kill -s 0 "$pid" 2>/dev/null; do sleep 1; done
+    printf "Process on port 3000 terminated\n"
+fi
+
+printf "Launching MySky AppShell on port 3000...\n"
+cd /Users/user/Mysky/projects/mysky_app_shell
+yarn start
+EOF
+    chmod +x "$TEST_TEMP_DIR/launch_appshell_dev_server.sh"
+
+    # Mock launch_spend_dev_server.sh  
+    cat > "$TEST_TEMP_DIR/launch_spend_dev_server.sh" << 'EOF'
+#!/usr/bin/env zsh
+
+# Mock implementation that follows the real script's logic
+echo "spend $*" >> "$TEST_TEMP_DIR/script_calls.log"
+
+# Check for processes on port 3001
+pid=$(lsof -Pi :3001 -sTCP:LISTEN -t)
+
+if [ ! -z $pid ]
+then
+    printf "Terminating current process on port 3001...\n"
+    kill -15 $pid
+    until kill -s 0 "$pid" 2>/dev/null; do sleep 1; done
+    printf "Process on port 3001 terminated\n"
+fi
+
+printf "Launching MySky Spend master worktree on port 3001...\n"
+cd /Users/user/Mysky/projects/_spend_front/master
+yarn start
+EOF
+    chmod +x "$TEST_TEMP_DIR/launch_spend_dev_server.sh"
+
+    # Override UTILITY_SCRIPTS_PATH to point to our mock directory for these specific scripts
+    export MOCK_UTILITY_SCRIPTS_PATH="$TEST_TEMP_DIR"
+}
+
 # Create test environment with all mocks
 setup_test_environment() {
     create_mock_mysky_projects
     setup_utility_mocks
+    create_mock_launch_scripts
 }
