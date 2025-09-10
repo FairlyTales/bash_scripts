@@ -71,7 +71,7 @@ run_test_directory() {
         while IFS= read -r line; do
             if [[ $line =~ ^ok\ [0-9]+\ (.+)$ ]]; then
                 # Passed test
-                local test_name="${BASH_REMATCH[1]}"
+                local test_name="$match[1]"
                 all_tests+=("$file_name: $test_name")
                 passed_tests+=("$file_name: $test_name")
                 test_files+=("$file_name")
@@ -79,7 +79,7 @@ run_test_directory() {
                 dir_passed_tests=$((dir_passed_tests + 1))
             elif [[ $line =~ ^not\ ok\ [0-9]+\ (.+)$ ]]; then
                 # Failed test
-                local test_name="${BASH_REMATCH[1]}"
+                local test_name="$match[1]"
                 all_tests+=("$file_name: $test_name")
                 failed_tests+=("$file_name: $test_name")
                 test_files+=("$file_name")
@@ -96,7 +96,7 @@ run_test_directory() {
     done
     
     if [ $failed_files -eq 0 ]; then
-        echo -e "${GREEN}All $test_name test files passed! ($total_files/$total_files files, $dir_passed_tests/$((dir_passed_tests + dir_failed_tests)) tests)${NC}"
+        echo -e "${GREEN}All test files passed! ($total_files/$total_files files, $dir_passed_tests/$((dir_passed_tests + dir_failed_tests)) tests)${NC}"
     else
         echo -e "${RED}$failed_files out of $total_files $test_name test files failed ($dir_failed_tests/$((dir_passed_tests + dir_failed_tests)) tests failed)${NC}"
     fi
