@@ -144,6 +144,23 @@ if [ -d "$ROOT_DIR/ide/tests" ]; then
     total_suites=$((total_suites + 1))
 fi
 
+# Display detailed individual test results
+if [ ${#failed_tests[@]} -gt 0 ]; then
+    echo -e "${RED}=== Failed Tests (${#failed_tests[@]}) ===${NC}"
+    for test in "${failed_tests[@]}"; do
+        echo -e "${RED}✗ $test${NC}"
+    done
+    echo
+fi
+
+if [ ${#passed_tests[@]} -gt 0 ]; then
+    echo -e "${GREEN}=== Passed Tests (${#passed_tests[@]}) ===${NC}"
+    for test in "${passed_tests[@]}"; do
+        echo -e "${GREEN}✓ $test${NC}"
+    done
+    echo
+fi
+
 # Final results
 echo -e "${CYAN}=== Test Summary ===${NC}"
 echo -e "${CYAN}Total Tests: $total_test_count | Passed: ${#passed_tests[@]} | Failed: ${#failed_tests[@]}${NC}"
@@ -162,23 +179,6 @@ else
     [ -d "$ROOT_DIR/ide/tests" ] && echo -e "IDE scripts: $( [ $ide_result -eq 0 ] && echo -e "${GREEN}✓${NC}" || echo -e "${RED}✗${NC}" )"
 fi
 echo
-
-# Display detailed individual test results
-if [ ${#failed_tests[@]} -gt 0 ]; then
-    echo -e "${RED}=== Failed Tests (${#failed_tests[@]}) ===${NC}"
-    for test in "${failed_tests[@]}"; do
-        echo -e "${RED}✗ $test${NC}"
-    done
-    echo
-fi
-
-if [ ${#passed_tests[@]} -gt 0 ]; then
-    echo -e "${GREEN}=== Passed Tests (${#passed_tests[@]}) ===${NC}"
-    for test in "${passed_tests[@]}"; do
-        echo -e "${GREEN}✓ $test${NC}"
-    done
-    echo
-fi
 
 # Exit with appropriate code
 if [ ${#failed_tests[@]} -gt 0 ]; then

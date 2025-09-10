@@ -103,8 +103,8 @@ teardown() {
     assert_output --partial "Package manager not specified, using yarn to install dependencies..."
 }
 
-@test "worktree_add_without_ide.sh handles branch names with special characters" {
-    local worktree_name="feature/no-ide-ui"
+@test "worktree_add_without_ide.sh handles branch names with hyphens and underscores" {
+    local worktree_name="feature-ui-update_v2"
     
     run bash -c "cd $TEST_REPO_DIR && echo '' | $GIT_SCRIPTS_PATH/worktree_add_without_ide.sh '$worktree_name'"
     

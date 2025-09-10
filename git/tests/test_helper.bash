@@ -132,6 +132,8 @@ create_test_env_files() {
     echo "MAIN_VAR=test_main" > "$base_dir/.env"
     mkdir -p "$base_dir/.gemini"
     echo "gemini_config=test" > "$base_dir/.gemini/config"
+    mkdir -p "$base_dir/.mcp_configs"
+    echo "mcp_config=test" > "$base_dir/.mcp_configs/config.json"
     echo "aider_config: test" > "$base_dir/.aider.conf.yml"
 }
 
