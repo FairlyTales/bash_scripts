@@ -26,3 +26,4 @@ logs
 
 # mcp server configs
 .mcp.*
+.mcp_configs
