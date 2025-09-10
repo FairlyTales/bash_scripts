@@ -164,9 +164,9 @@ run_test_directory() {
         while IFS= read -r line; do
             if [[ $line =~ ^ok\ [0-9]+\ (.+)$ ]]; then
                 # Passed test
-                local test_name="${line#ok * }"
-                all_tests+=("$file_name: $test_name")
-                passed_tests+=("$file_name: $test_name")
+                local passed_test_name="${line#ok * }"
+                all_tests+=("$file_name: $passed_test_name")
+                passed_tests+=("$file_name: $passed_test_name")
                 test_files+=("$file_name")
                 file_test_count=$((file_test_count + 1))
                 file_passed_count=$((file_passed_count + 1))
@@ -177,9 +177,9 @@ run_test_directory() {
                 
             elif [[ $line =~ ^not\ ok\ [0-9]+\ (.+)$ ]]; then
                 # Failed test
-                local test_name="${line#not ok * }"
-                all_tests+=("$file_name: $test_name")
-                failed_tests+=("$file_name: $test_name")
+                local failed_test_name="${line#not ok * }"
+                all_tests+=("$file_name: $failed_test_name")
+                failed_tests+=("$file_name: $failed_test_name")
                 test_files+=("$file_name")
                 file_test_count=$((file_test_count + 1))
                 file_failed_count=$((file_failed_count + 1))
@@ -212,7 +212,7 @@ run_test_directory() {
     done
     
     if [ $failed_files -eq 0 ]; then
-        echo -e "${GREEN}All test files passed! ($total_files/$total_files files, $dir_passed_tests/$((dir_passed_tests + dir_failed_tests)) tests)${NC}"
+        echo -e "${GREEN}All $test_name test files passed! ($total_files/$total_files files, $dir_passed_tests/$((dir_passed_tests + dir_failed_tests)) tests)${NC}"
     else
         echo -e "${RED}$failed_files out of $total_files $test_name test files failed ($dir_failed_tests/$((dir_passed_tests + dir_failed_tests)) tests failed)${NC}"
     fi
