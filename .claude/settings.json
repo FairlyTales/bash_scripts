@@ -26,6 +26,7 @@
       "Bash(python:*)",
       "Bash(pytest:*)",
       "Bash(osascript:*)",
+      "Bash(bats:*)",
       "Bash(terminal-notifier:*)",
       "Bash(claude-code hooks:*)",
       "WebFetch(domain:www.notion.so)",

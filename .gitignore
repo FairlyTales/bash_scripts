@@ -21,6 +21,9 @@ node_modules
 # MCP servers
 .serena
 
+# Claude
+.claude/data
+
 # logs
 logs
 
