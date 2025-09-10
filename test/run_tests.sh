@@ -5,9 +5,10 @@ RED='\033[0;31m'
 GREEN='\033[0;32m'
 YELLOW='\033[1;33m'
 CYAN='\033[0;36m'
+WHITE='\033[0;37m'
 NC='\033[0m' # No Color
 
-# Spinner animation
+# Spinner animation with dynamic test statistics
 SPINNER_PID=""
 spinner_chars="⠋⠙⠹⠸⠼⠴⠦⠧⠇⠏"
 
@@ -25,13 +26,37 @@ start_spinner() {
     SPINNER_PID=$!
 }
 
+start_dynamic_spinner() {
+    local message="$1"
+    local stats_file="$2"
+    tput civis # Hide cursor
+    (
+        i=0
+        while true; do
+            local stats=""
+            if [ -f "$stats_file" ]; then
+                stats=$(cat "$stats_file" 2>/dev/null || echo "")
+            fi
+            printf "\r${CYAN}%s %s${NC}" "${spinner_chars:$i:1}" "$message"
+            if [ -n "$stats" ]; then
+                printf "\n  ${WHITE}%s${NC}" "$stats"
+                printf "\033[1A" # Move cursor back up
+            fi
+            i=$(( (i + 1) % ${#spinner_chars} ))
+            sleep 0.1
+        done
+    ) &
+    SPINNER_PID=$!
+}
+
 stop_spinner() {
     if [ -n "$SPINNER_PID" ]; then
         kill "$SPINNER_PID" 2>/dev/null
         wait "$SPINNER_PID" 2>/dev/null
         SPINNER_PID=""
     fi
-    printf "\r\033[K" # Clear the entire line
+    printf "\r\033[K" # Clear the current line
+    printf "\n\033[1A\033[K" # Clear the line below and move back up
     tput cnorm # Show cursor
 }
 
@@ -112,50 +137,77 @@ run_test_directory() {
     for test_file in "${test_file_array[@]}"; do
         local file_name=$(basename "$test_file")
         
-        # Start spinner animation
-        start_spinner "Running $file_name..."
+        # Create temporary file for dynamic stats
+        local stats_file=$(mktemp)
+        echo "Passed: 0 | Failed: 0 | Executed: 0" > "$stats_file"
         
-        # Run bats with TAP format to get individual test results
-        local tap_output=""
-        if tap_output=$(bats --tap "$test_file" 2>&1); then
-            # Stop spinner and show success
-            stop_spinner
-            echo -e "${GREEN}✓ $file_name passed${NC}"
-        else
-            # Stop spinner and show failure
-            stop_spinner
-            echo -e "${RED}✗ $file_name failed${NC}"
-            failed_files=$((failed_files + 1))
-        fi
+        # Start dynamic spinner animation
+        start_dynamic_spinner "Running $file_name..." "$stats_file"
         
-        # Parse TAP output to get individual test results
+        # Initialize counters for this file
         local file_test_count=0
         local file_failed_count=0
+        local file_passed_count=0
+        local file_total_tests=0
+        
+        # Get total test count first
+        if command -v grep &> /dev/null; then
+            file_total_tests=$(grep -c "^@test" "$test_file" 2>/dev/null || echo "?")
+        else
+            file_total_tests="?"
+        fi
+        
+        # Run bats with TAP format and process output in real-time
+        local bats_exit_code=0
+        local temp_exit_file=$(mktemp)
         
         while IFS= read -r line; do
             if [[ $line =~ ^ok\ [0-9]+\ (.+)$ ]]; then
                 # Passed test
-                local test_name="$match[1]"
+                local test_name="${line#ok * }"
                 all_tests+=("$file_name: $test_name")
                 passed_tests+=("$file_name: $test_name")
                 test_files+=("$file_name")
                 file_test_count=$((file_test_count + 1))
+                file_passed_count=$((file_passed_count + 1))
                 dir_passed_tests=$((dir_passed_tests + 1))
+                
+                # Update dynamic stats
+                echo "Passed: $file_passed_count | Failed: $file_failed_count | Executed: $file_test_count/$file_total_tests" > "$stats_file"
+                
             elif [[ $line =~ ^not\ ok\ [0-9]+\ (.+)$ ]]; then
                 # Failed test
-                local test_name="$match[1]"
+                local test_name="${line#not ok * }"
                 all_tests+=("$file_name: $test_name")
                 failed_tests+=("$file_name: $test_name")
                 test_files+=("$file_name")
                 file_test_count=$((file_test_count + 1))
                 file_failed_count=$((file_failed_count + 1))
                 dir_failed_tests=$((dir_failed_tests + 1))
+                
+                # Update dynamic stats
+                echo "Passed: $file_passed_count | Failed: $file_failed_count | Executed: $file_test_count/$file_total_tests" > "$stats_file"
             fi
-        done <<< "$tap_output"
+        done < <(bats --tap "$test_file" 2>/dev/null; echo $? > "$temp_exit_file")
+        
+        # Get the exit code
+        bats_exit_code=$(cat "$temp_exit_file")
+        rm -f "$temp_exit_file"
+        
+        # Stop spinner and show results
+        stop_spinner
+        rm -f "$stats_file"
+        
+        if [ $bats_exit_code -eq 0 ]; then
+            echo -e "${GREEN}✓ $file_name passed${NC}"
+        else
+            echo -e "${RED}✗ $file_name failed${NC}"
+            failed_files=$((failed_files + 1))
+        fi
         
         total_files=$((total_files + 1))
         total_test_count=$((total_test_count + file_test_count))
-        echo "  Individual tests: $file_test_count total, $((file_test_count - file_failed_count)) passed, $file_failed_count failed"
+        echo "  Individual tests: $file_test_count total, $file_passed_count passed, $file_failed_count failed"
         echo
     done
     
