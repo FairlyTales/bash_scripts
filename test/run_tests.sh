@@ -46,15 +46,15 @@ run_test_directory() {
     
     local failed_files=0
     local total_files=0
-    local file_failed_tests=0
-    local file_passed_tests=0
+    local dir_failed_tests=0
+    local dir_passed_tests=0
     
     for test_file in "${test_file_array[@]}"; do
         local file_name=$(basename "$test_file")
         echo -e "${CYAN}Running $file_name...${NC}"
         
         # Run bats with TAP format to get individual test results
-        local tap_output
+        local tap_output=""
         if tap_output=$(bats --tap "$test_file" 2>&1); then
             # File passed overall
             echo -e "${GREEN}✓ $file_name passed${NC}"
@@ -76,7 +76,7 @@ run_test_directory() {
                 passed_tests+=("$file_name: $test_name")
                 test_files+=("$file_name")
                 file_test_count=$((file_test_count + 1))
-                file_passed_tests=$((file_passed_tests + 1))
+                dir_passed_tests=$((dir_passed_tests + 1))
             elif [[ $line =~ ^not\ ok\ [0-9]+\ (.+)$ ]]; then
                 # Failed test
                 local test_name="${BASH_REMATCH[1]}"
@@ -85,7 +85,7 @@ run_test_directory() {
                 test_files+=("$file_name")
                 file_test_count=$((file_test_count + 1))
                 file_failed_count=$((file_failed_count + 1))
-                file_failed_tests=$((file_failed_tests + 1))
+                dir_failed_tests=$((dir_failed_tests + 1))
             fi
         done <<< "$tap_output"
         
@@ -96,9 +96,9 @@ run_test_directory() {
     done
     
     if [ $failed_files -eq 0 ]; then
-        echo -e "${GREEN}All $test_name test files passed! ($total_files/$total_files files, $file_passed_tests/$((file_passed_tests + file_failed_tests)) tests)${NC}"
+        echo -e "${GREEN}All $test_name test files passed! ($total_files/$total_files files, $dir_passed_tests/$((dir_passed_tests + dir_failed_tests)) tests)${NC}"
     else
-        echo -e "${RED}$failed_files out of $total_files $test_name test files failed ($file_failed_tests/$((file_passed_tests + file_failed_tests)) tests failed)${NC}"
+        echo -e "${RED}$failed_files out of $total_files $test_name test files failed ($dir_failed_tests/$((dir_passed_tests + dir_failed_tests)) tests failed)${NC}"
     fi
     
     echo
