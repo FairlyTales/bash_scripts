@@ -50,6 +50,15 @@ To add a new bash script:
 2. Add alias in `.zshrc` using path variables like `$GIT_SCRIPTS_PATH`
 3. Run `chmod +x /path/to/script.sh` to make executable
 4. Scripts should be symlinked from user directory as documented in README.MD
+5. Ask user  `chmod -X /Users/{user}/{bash_scripts_directory}/{CORRESPONDING_DIRECTORY}/*` and `chmod 755 /Users/{user}/{bash_scripts_directory}/{CORRESPONDING_DIRECTORY}/*` to give all files in the directory rights to be executed (must be executed for every subdirectory). You don't have the rights to do this, so MUST ask user to do it
+6. Add tests for the script in the appropriate `tests/` directory
+
+## Updating Existing Scripts
+
+To update an existing bash script:
+1. Update the script in the appropriate directory (git/, ide/, or utility/)
+2. Update the tests in the appropriate `tests/` directory
+3. Run `test-scripts` to run the tests and ensure they pass
 
 ## Environment Variables
 
