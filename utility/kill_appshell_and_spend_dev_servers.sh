@@ -16,15 +16,15 @@ fi
 if [ ! -z $app_shell_pid ]
 then
     printf "Terminating current process on port 3000...\n"
-    kill -15 $app_shell_pid
-    until kill -s 0 "$app_shell_pid" 2>/dev/null; do sleep 1; done
+    command kill -15 $app_shell_pid
+    while command kill -s 0 "$app_shell_pid" 2>/dev/null; do sleep 1; done
     printf "Process on port 3000 terminated\n"
 fi
 
 if [ ! -z $spend_pid ]
 then
     printf "Terminating current process on port 3001...\n"
-    kill -15 $spend_pid
-    until kill -s 0 "$spend_pid" 2>/dev/null; do sleep 1; done
+    command kill -15 $spend_pid
+    while command kill -s 0 "$spend_pid" 2>/dev/null; do sleep 1; done
     printf "Process on port 3001 terminated\n"
 fi
