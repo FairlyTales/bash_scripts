@@ -5,7 +5,7 @@ load test_helper
 setup() {
     create_test_repo
     setup_test_environment
-    setup_all_mocks
+    setup_mocks_for_remote_worktree
     create_test_env_files "$TEST_REPO_DIR"
     create_fake_remote
 }
@@ -155,4 +155,54 @@ teardown() {
     # The git worktree add command should be attempted
     # In our mock environment, this will succeed
     assert_dir_exists "$TEST_REPO_DIR/$branch_name"
+}
+
+@test "fails when remote branch does not exist" {
+    local branch_name="non-existent-branch"
+    
+    # Do NOT create the remote branch
+    run bash -c "cd $TEST_REPO_DIR && $GIT_SCRIPTS_PATH/worktree_add_remote.sh $branch_name"
+    
+    assert_failure
+    assert_output --partial "Branch 'non-existent-branch' not found on remote repository"
+    assert_output --partial "Please check the branch name or create the branch on remote first"
+    
+    # Verify worktree directory was NOT created
+    assert_dir_not_exists "$TEST_REPO_DIR/$branch_name"
+}
+
+@test "fails when worktree already exists" {
+    local branch_name="duplicate-worktree"
+    
+    # Create the remote branch first
+    create_remote_branch "$branch_name"
+    
+    # Create the worktree directory with content to simulate conflict
+    mkdir -p "$TEST_REPO_DIR/$branch_name"
+    echo "existing content" > "$TEST_REPO_DIR/$branch_name/existing_file.txt"
+    
+    run bash -c "cd $TEST_REPO_DIR && $GIT_SCRIPTS_PATH/worktree_add_remote.sh $branch_name"
+    
+    assert_failure
+    assert_output --partial "Failed to create worktree for branch '$branch_name'"
+}
+
+@test "handles git fetch failure" {
+    local branch_name="test-branch"
+    
+    # Mock git to fail on fetch
+    cat > "$TEST_TEMP_DIR/git" << 'EOF'
+#!/usr/bin/env bash
+if [[ "$1" == "fetch" ]]; then
+    exit 1
+fi
+# For other git commands, use the real git
+exec /usr/bin/git "$@"
+EOF
+    chmod +x "$TEST_TEMP_DIR/git"
+    
+    run bash -c "cd $TEST_REPO_DIR && PATH=$TEST_TEMP_DIR:\$PATH $GIT_SCRIPTS_PATH/worktree_add_remote.sh $branch_name"
+    
+    assert_failure
+    assert_output --partial "Failed to fetch from remote repository"
 }

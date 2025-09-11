@@ -360,3 +360,84 @@ setup_all_mocks() {
     rm -f "$TEST_TEMP_DIR/package_manager_calls.log"
     rm -f "$TEST_TEMP_DIR/ide_calls.log"
 }
+
+# Setup mocks specifically for remote worktree testing
+# This version allows fetch operations to work properly
+setup_mocks_for_remote_worktree() {
+    setup_package_manager_mocks
+    setup_git_mocks_for_remote_worktree
+    
+    # Clear any existing logs
+    rm -f "$TEST_TEMP_DIR/git_calls.log"
+    rm -f "$TEST_TEMP_DIR/package_manager_calls.log"
+    rm -f "$TEST_TEMP_DIR/ide_calls.log"
+}
+
+# Setup git mocks that allow fetch to work for remote worktree testing
+setup_git_mocks_for_remote_worktree() {
+    export PATH="$TEST_TEMP_DIR:$PATH"
+    
+    # Create mock git that intercepts some commands but allows fetch
+    cat > "$TEST_TEMP_DIR/git" << 'EOF'
+#!/usr/bin/env bash
+
+# Pass through most git commands to real git, but mock specific ones
+case "$1" in
+    "clone")
+        echo "git $*" >> "$TEST_TEMP_DIR/git_calls.log"
+        # Create fake cloned directory
+        # Handle both "git clone URL DIR" and "git clone --bare URL DIR"
+        local target_dir=""
+        if [ "$2" = "--bare" ]; then
+            # git clone --bare URL DIR - directory is $4
+            target_dir="$4"
+        else
+            # git clone URL DIR - directory is $3, or URL basename if $3 is empty
+            if [ -n "$3" ]; then
+                target_dir="$3"
+            else
+                # Extract basename from URL in $2
+                target_dir=$(basename "$2" .git)
+            fi
+        fi
+        
+        if [ -n "$target_dir" ]; then
+            mkdir -p "$target_dir"
+            cd "$target_dir"
+        fi
+        
+        # Initialize as git repo
+        if [ "$2" = "--bare" ]; then
+            /usr/bin/git init --bare
+        else
+            /usr/bin/git init
+            /usr/bin/git config user.name "Test User"
+            /usr/bin/git config user.email "test@example.com"
+            echo "# Cloned Repository" > README.md
+            /usr/bin/git add README.md
+            /usr/bin/git commit -m "Initial commit"
+        fi
+        exit 0
+        ;;
+    "fetch")
+        echo "git $*" >> "$TEST_TEMP_DIR/git_calls.log"
+        # Allow fetch to actually work for remote worktree testing
+        exec /usr/bin/git "$@"
+        ;;
+    "push")
+        echo "git $*" >> "$TEST_TEMP_DIR/git_calls.log"
+        # Allow push to actually work for remote worktree testing
+        exec /usr/bin/git "$@"
+        ;;
+    "pull")
+        echo "git $*" >> "$TEST_TEMP_DIR/git_calls.log"
+        exit 0
+        ;;
+    *)
+        # Pass through to real git for other commands
+        exec /usr/bin/git "$@"
+        ;;
+esac
+EOF
+    chmod +x "$TEST_TEMP_DIR/git"
+}

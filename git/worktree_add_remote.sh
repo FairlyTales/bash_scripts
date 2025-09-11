@@ -3,9 +3,28 @@
 # run fetch and create worktree from already existing branch
 # this command should be run from the repository root, not from the master
 
-git fetch &&
-git worktree add $1 $1 &&
-cd $1
+git fetch || {
+    printf "Error: Failed to fetch from remote repository\n" >&2
+    exit 1
+}
+
+# Check if the branch exists on remote after fetch
+if ! git show-ref --verify --quiet "refs/remotes/origin/$1"; then
+    printf "Error: Branch '%s' not found on remote repository\n" "$1" >&2
+    printf "Please check the branch name or create the branch on remote first\n" >&2
+    exit 1
+fi
+
+git worktree add "$1" "$1" || {
+    printf "Error: Failed to create worktree for branch '%s'\n" "$1" >&2
+    printf "The branch may already have a worktree or there may be a naming conflict\n" >&2
+    exit 1
+}
+
+cd "$1" || {
+    printf "Error: Failed to change to worktree directory '%s'\n" "$1" >&2
+    exit 1
+}
 
 if [ -n "$2" ]
 then
