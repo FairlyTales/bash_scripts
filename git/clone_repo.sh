@@ -33,7 +33,7 @@ printf "\nType user email or press Enter to use global:\n"
 read useremail
 git config user.email $useremail
 
-printf "\n\nRepository successfully cloned \\(^_^)/\n\nYou need to manually add cursorrules and aider config to this new project\n\nDo you want to launch IDE in this project? [Y/n]\n"
+printf "\n\nRepository successfully cloned \\(^_^)/\n\nYou need to manually add Claude Code, Gemini CLI, Cursor and aider configs to this new project\n\nDo you want to launch IDE in this project? [Y/n]\n"
 read yn
 
 DIRNAME=$(dirname "$0")

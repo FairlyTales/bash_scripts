@@ -147,5 +147,5 @@ teardown() {
     
     assert_success
     assert_output --partial "Repository successfully cloned"
-    assert_output --partial "You need to manually add cursorrules and aider config"
+    assert_output --partial "You need to manually add Claude Code, Gemini CLI, Cursor and aider configs to this new project"
 }

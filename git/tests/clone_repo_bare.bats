@@ -14,7 +14,6 @@ teardown() {
     rm -rf demo_*
     rm -rf project_*
     rm -rf .bare
-    rm -rf .project_cursorrules
 }
 
 # Enhanced setup for bare clone testing
@@ -169,7 +168,6 @@ EOF
     # Verify directory structure
     assert_dir_exists "test_repo"
     assert_dir_exists "test_repo/.bare"
-    assert_dir_exists "test_repo/.project_cursorrules"
     
     # Verify .git file points to .bare
     assert_file_exists "test_repo/.git"
@@ -474,7 +472,6 @@ EOF
     # Verify all required directories exist
     assert_dir_exists "demo_project"
     assert_dir_exists "demo_project/.bare"
-    assert_dir_exists "demo_project/.project_cursorrules"
     assert_dir_exists "demo_project-master"
     
     # Verify .git file content
@@ -503,7 +500,7 @@ EOF
     assert_output --partial "Repository successfully cloned"
     assert_output --partial "worktree directory structure created"
     assert_output --partial "master branch created and set to remote"
-    assert_output --partial "You need to manually add cursorrules and aider config"
+    assert_output --partial "You need to manually add Claude Code, Gemini CLI, Cursor and aider configs to this new project"
 }
 
 @test "handles project name with interactive directory input" {

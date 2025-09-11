@@ -17,7 +17,6 @@ else
 fi
 
 mkdir .bare
-mkdir .project_cursorrules
 mv ./* ./.bare
 echo "gitdir: ./.bare" > .git
 
@@ -76,4 +75,4 @@ if [ -n "$useremail" ]; then
     git config user.email "$useremail"
 fi
 
-printf "\nRepository successfully cloned \\(^_^)/, worktree directory structure created, master branch created and set to remote\n\n\nYou need to manually add cursorrules and aider config to this new project\n"
+printf "\nRepository successfully cloned \\(^_^)/, worktree directory structure created, master branch created and set to remote\n\n\nYou need to manually add Claude Code, Gemini CLI, Cursor and aider configs to this new project\n"
