@@ -13,5 +13,5 @@ then
 fi
 
 printf "Launching MySky Spend master worktree on port 3001...\n"
-cd /Users/user/Mysky/projects/_spend_front/master
+cd /Users/user/Mysky/projects/_spend/_spend-master
 yarn start

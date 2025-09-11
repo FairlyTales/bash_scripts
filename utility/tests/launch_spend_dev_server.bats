@@ -48,7 +48,7 @@ teardown() {
 }
 
 @test "navigates to correct spend worktree directory" {
-    # The script has a hardcoded path: /Users/user/Mysky/projects/_spend_front/master
+    # The script has a hardcoded path: /Users/user/Mysky/projects/_spend/_spend-master
     
     run "$TEST_TEMP_DIR/launch_spend_dev_server.sh"
     

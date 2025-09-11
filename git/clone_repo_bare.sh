@@ -29,7 +29,7 @@ else
 fi
 
 defaultbranch="master"
-printf "\nSpecify the master branch name (default is master, if you use GitHub enter main)\n"
+printf "\nSpecify the master branch name: press Enter to use master (default), write main if you use GitHub, or write the name of the branch you want to use\n"
 read masterbranch
 
 if [ -z "$masterbranch" ]; then

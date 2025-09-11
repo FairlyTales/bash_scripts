@@ -13,5 +13,5 @@ then
 fi
 
 printf "Launching MySky AppShell on port 3000...\n"
-cd /Users/user/Mysky/projects/mysky_app_shell
+cd /Users/user/Mysky/projects/app_shell
 yarn start

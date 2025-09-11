@@ -6,10 +6,10 @@ setup() {
     setup_test_environment
     
     # Create mock .env.local files with initial dev server URLs
-    mkdir -p "$TEST_TEMP_DIR/mock_projects/mysky_app_shell"
+    mkdir -p "$TEST_TEMP_DIR/mock_projects/app_shell"
     mkdir -p "$TEST_TEMP_DIR/mock_projects/mysky_spend"
     
-    echo "REACT_APP_API_URL=https://dev1.mysky.com/api" > "$TEST_TEMP_DIR/mock_projects/mysky_app_shell/.env.local"
+    echo "REACT_APP_API_URL=https://dev1.mysky.com/api" > "$TEST_TEMP_DIR/mock_projects/app_shell/.env.local"
     echo "REACT_APP_API_URL=https://dev1.mysky.com/api" > "$TEST_TEMP_DIR/mock_projects/mysky_spend/.env.local"
     
     # Create mock launch script that logs calls
@@ -59,11 +59,11 @@ if [ -z "\$1" ]
        printf "Enter the server number\n"
        read serverNumber
 
-       "$TEST_TEMP_DIR/mock_sed_wrapper.sh" -i '' s/dev[0-9]/dev\$serverNumber/g $TEST_TEMP_DIR/mock_projects/mysky_app_shell/.env.local
+       "$TEST_TEMP_DIR/mock_sed_wrapper.sh" -i '' s/dev[0-9]/dev\$serverNumber/g $TEST_TEMP_DIR/mock_projects/app_shell/.env.local
        "$TEST_TEMP_DIR/mock_sed_wrapper.sh" -i '' s/dev[0-9]/dev\$serverNumber/g $TEST_TEMP_DIR/mock_projects/mysky_spend/.env.local
        printf "\nDev server URLs in App-Shell and Spend changed to \$serverNumber\n\n"
     else
-      "$TEST_TEMP_DIR/mock_sed_wrapper.sh" -i '' s/dev[0-9]/dev\$1/g $TEST_TEMP_DIR/mock_projects/mysky_app_shell/.env.local
+      "$TEST_TEMP_DIR/mock_sed_wrapper.sh" -i '' s/dev[0-9]/dev\$1/g $TEST_TEMP_DIR/mock_projects/app_shell/.env.local
       "$TEST_TEMP_DIR/mock_sed_wrapper.sh" -i '' s/dev[0-9]/dev\$1/g $TEST_TEMP_DIR/mock_projects/mysky_spend/.env.local
       printf "\nDev server in App-Shell and Spend changed to \$1\n\n"
     fi

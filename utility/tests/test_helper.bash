@@ -12,8 +12,8 @@ export TEST_TEMP_DIR="$BATS_TEST_TMPDIR"
 
 # Mock directories for MySky projects
 export MOCK_MYSKY_ROOT="$TEST_TEMP_DIR/Mysky"
-export MOCK_APPSHELL_DIR="$MOCK_MYSKY_ROOT/projects/mysky_app_shell"
-export MOCK_SPEND_DIR="$MOCK_MYSKY_ROOT/projects/_spend_front/master"
+export MOCK_APPSHELL_DIR="$MOCK_MYSKY_ROOT/projects/app_shell"
+export MOCK_SPEND_DIR="$MOCK_MYSKY_ROOT/projects/_spend/_spend-master"
 export MOCK_DOWNLOADS_DIR="$TEST_TEMP_DIR/Downloads"
 export MOCK_PROMPT_LIBRARY_SOURCE="$TEST_TEMP_DIR/My stuff/Coding/llm_stuff/prompt_library/prompt_library"
 
@@ -300,7 +300,7 @@ create_mock_launch_scripts() {
     cp "$UTILITY_SCRIPTS_PATH/launch_appshell_dev_server.sh" "$TEST_TEMP_DIR/launch_appshell_dev_server.sh"
     
     # Replace the hardcoded path with our mock path
-    sed -i '' "s|/Users/user/Mysky/projects/mysky_app_shell|$MOCK_APPSHELL_DIR|g" "$TEST_TEMP_DIR/launch_appshell_dev_server.sh"
+    sed -i '' "s|/Users/user/Mysky/projects/app_shell|$MOCK_APPSHELL_DIR|g" "$TEST_TEMP_DIR/launch_appshell_dev_server.sh"
     
     # Replace kill builtin with external command to use our mock
     perl -i -pe 's/kill -/command kill -/g' "$TEST_TEMP_DIR/launch_appshell_dev_server.sh"
@@ -311,7 +311,7 @@ create_mock_launch_scripts() {
     cp "$UTILITY_SCRIPTS_PATH/launch_spend_dev_server.sh" "$TEST_TEMP_DIR/launch_spend_dev_server.sh"
     
     # Replace the hardcoded path with our mock path
-    sed -i '' "s|/Users/user/Mysky/projects/_spend_front/master|$MOCK_SPEND_DIR|g" "$TEST_TEMP_DIR/launch_spend_dev_server.sh"
+    sed -i '' "s|/Users/user/Mysky/projects/_spend/_spend-master|$MOCK_SPEND_DIR|g" "$TEST_TEMP_DIR/launch_spend_dev_server.sh"
     
     # Replace kill builtin with external command to use our mock
     perl -i -pe 's/kill -/command kill -/g' "$TEST_TEMP_DIR/launch_spend_dev_server.sh"

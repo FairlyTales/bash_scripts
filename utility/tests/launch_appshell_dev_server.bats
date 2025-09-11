@@ -80,7 +80,7 @@ teardown() {
 }
 
 @test "navigates to correct appshell directory" {
-    # The script has a hardcoded path: /Users/user/Mysky/projects/mysky_app_shell
+    # The script has a hardcoded path: /Users/user/Mysky/projects/app_shell
     # We'll verify it calls yarn from the right context
     
     run "$TEST_TEMP_DIR/launch_appshell_dev_server.sh"
@@ -88,7 +88,7 @@ teardown() {
     assert_success
     
     # Check that yarn was called and verify the working directory in the mock
-    assert_mock_called_with "$TEST_TEMP_DIR/yarn_calls.log" "yarn start (pwd: /Users/user/Mysky/projects/mysky_app_shell)"
+    assert_mock_called_with "$TEST_TEMP_DIR/yarn_calls.log" "yarn start (pwd: /Users/user/Mysky/projects/app_shell)"
 }
 
 @test "uses specific lsof command format for listening processes" {

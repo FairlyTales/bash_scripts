@@ -7,12 +7,12 @@ if [ -z "$1" ]
       printf "Enter the server number\n"
       read serverNumber
 
-      sed -i '' s/dev\[0-9]\/dev$serverNumber/g /Users/user/Mysky/projects/mysky_app_shell/.env.local
-      sed -i '' s/dev\[0-9]\/dev$serverNumber/g /Users/user/Mysky/projects/_mysky_spend/master/.env.local
+      sed -i '' s/dev\[0-9]\/dev$serverNumber/g /Users/user/Mysky/projects/app_shell/.env.local
+      sed -i '' s/dev\[0-9]\/dev$serverNumber/g /Users/user/Mysky/projects/_spend/_spend-master/.env.local
       printf "\nDev server URLs in App-Shell and Spend changed to $serverNumber\n\n"
     else
-      sed -i '' s/dev\[0-9]\/dev$1/g /Users/user/Mysky/projects/mysky_app_shell/.env.local
-      sed -i '' s/dev\[0-9]\/dev$1/g /Users/user/Mysky/projects/_mysky_spend/master/.env.local
+      sed -i '' s/dev\[0-9]\/dev$1/g /Users/user/Mysky/projects/app_shell/.env.local
+      sed -i '' s/dev\[0-9]\/dev$1/g /Users/user/Mysky/projects/_spend/_spend-master/.env.local
       printf "\nDev server in App-Shell and Spend changed to $1\n\n"
     fi
 
