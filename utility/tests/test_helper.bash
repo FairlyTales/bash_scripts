@@ -140,8 +140,11 @@ if [[ "\$*" == *"s/dev[0-9]/dev"* ]]; then
     # Mock the replacement if file exists
     if [ -f "\$file" ]; then
         # Create a backup and modify the file for testing
-        sed "s/dev[0-9]/dev\${new_server}/g" "\$file" > "\${file}.tmp" && mv "\${file}.tmp" "\$file"
+        /usr/bin/sed "s/dev[0-9]/dev\${new_server}/g" "\$file" > "\${file}.tmp" && mv "\${file}.tmp" "\$file"
     fi
+# Handle export_prompt_library sed patterns - pass through to real sed
+elif [[ "\$*" == *"SOURCE_DIR="* ]] || [[ "\$*" == *"DEST_DIR="* ]]; then
+    exec /usr/bin/sed "\$@"
 fi
 exit 0
 EOF
@@ -154,14 +157,22 @@ echo "find $*" >> "$TEST_TEMP_DIR/find_calls.log"
 
 # Handle find command for export_prompt_library
 if [[ "$*" == *"-type f -exec cp {} "* ]]; then
-    source_dir="$2"
-    dest_dir="${*##*cp {} }"
-    dest_dir="${dest_dir% \\;}"
-    dest_dir="${dest_dir%/}"
+    # Parse arguments manually
+    args=("$@")
+    source_dir="${args[0]}"
+    
+    # Find the destination after "-exec cp {} "
+    for i in "${!args[@]}"; do
+        if [[ "${args[i]}" == "cp" && "${args[i+1]}" == "{}" ]]; then
+            dest_dir="${args[i+2]}"
+            dest_dir="${dest_dir%/}"
+            break
+        fi
+    done
     
     if [ -d "$source_dir" ]; then
         # Copy all files recursively, flattening the structure
-        /usr/bin/find "$source_dir" -type f -exec cp {} "$dest_dir/" \;
+        /usr/bin/find "$source_dir" -type f -exec /bin/cp {} "$dest_dir/" \;
     fi
 fi
 exit 0
@@ -290,6 +301,10 @@ create_mock_launch_scripts() {
     
     # Replace the hardcoded path with our mock path
     sed -i '' "s|/Users/user/Mysky/projects/mysky_app_shell|$MOCK_APPSHELL_DIR|g" "$TEST_TEMP_DIR/launch_appshell_dev_server.sh"
+    
+    # Replace kill builtin with external command to use our mock
+    perl -i -pe 's/kill -/command kill -/g' "$TEST_TEMP_DIR/launch_appshell_dev_server.sh"
+    
     chmod +x "$TEST_TEMP_DIR/launch_appshell_dev_server.sh"
 
     # Copy the real launch_spend_dev_server.sh to test directory and modify paths
@@ -297,6 +312,10 @@ create_mock_launch_scripts() {
     
     # Replace the hardcoded path with our mock path
     sed -i '' "s|/Users/user/Mysky/projects/_spend_front/master|$MOCK_SPEND_DIR|g" "$TEST_TEMP_DIR/launch_spend_dev_server.sh"
+    
+    # Replace kill builtin with external command to use our mock
+    perl -i -pe 's/kill -/command kill -/g' "$TEST_TEMP_DIR/launch_spend_dev_server.sh"
+    
     chmod +x "$TEST_TEMP_DIR/launch_spend_dev_server.sh"
 }
 

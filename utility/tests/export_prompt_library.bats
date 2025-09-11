@@ -3,12 +3,13 @@
 load test_helper
 
 setup() {
+    # Skip mock launch scripts creation for this test
+    export SKIP_MOCK_LAUNCH_SCRIPTS="true"
     setup_test_environment
     
     # Create a modified version of the script that uses our test paths
-    sed "s|/Users/user/My stuff/Coding/llm_stuff/prompt_library/prompt_library|$MOCK_PROMPT_LIBRARY_SOURCE|g; s|/Users/user/Downloads/exported-prompts|$MOCK_DOWNLOADS_DIR/exported-prompts|g" \
+    sed "s|SOURCE_DIR=\"/Users/user/My stuff/Coding/llm_stuff/prompt_library/prompt_library\"|SOURCE_DIR=\"$MOCK_PROMPT_LIBRARY_SOURCE\"|g; s|DEST_DIR=\"/Users/user/Downloads/exported-prompts\"|DEST_DIR=\"$MOCK_DOWNLOADS_DIR/exported-prompts\"|g" \
         "$UTILITY_SCRIPTS_PATH/export_prompt_library.sh" > "$TEST_TEMP_DIR/test_export_prompt_library.sh"
-    chmod +x "$TEST_TEMP_DIR/test_export_prompt_library.sh"
 }
 
 teardown() {
@@ -16,7 +17,7 @@ teardown() {
 }
 
 @test "successfully exports prompt library when source exists" {
-    run "$TEST_TEMP_DIR/test_export_prompt_library.sh"
+    run bash "$TEST_TEMP_DIR/test_export_prompt_library.sh"
     
     assert_success
     assert_output --partial "Exporting prompt library entries..."
@@ -30,7 +31,7 @@ teardown() {
     # Remove the destination directory
     rm -rf "$MOCK_DOWNLOADS_DIR/exported-prompts"
     
-    run "$TEST_TEMP_DIR/test_export_prompt_library.sh"
+    run bash "$TEST_TEMP_DIR/test_export_prompt_library.sh"
     
     assert_success
     assert_output --partial "Creating destination directory: $MOCK_DOWNLOADS_DIR/exported-prompts"
@@ -43,7 +44,7 @@ teardown() {
     # Remove the source directory
     rm -rf "$MOCK_PROMPT_LIBRARY_SOURCE"
     
-    run "$TEST_TEMP_DIR/test_export_prompt_library.sh"
+    run bash "$TEST_TEMP_DIR/test_export_prompt_library.sh"
     
     assert_failure
     assert_output --partial "Error: Source directory does not exist: $MOCK_PROMPT_LIBRARY_SOURCE"
@@ -53,7 +54,7 @@ teardown() {
 }
 
 @test "copies all files recursively and flattens directory structure" {
-    run "$TEST_TEMP_DIR/test_export_prompt_library.sh"
+    run bash "$TEST_TEMP_DIR/test_export_prompt_library.sh"
     
     assert_success
     
@@ -67,7 +68,7 @@ teardown() {
 }
 
 @test "preserves file contents during export" {
-    run "$TEST_TEMP_DIR/test_export_prompt_library.sh"
+    run bash "$TEST_TEMP_DIR/test_export_prompt_library.sh"
     
     assert_success
     
@@ -81,7 +82,7 @@ teardown() {
     # Pre-create destination directory
     mkdir -p "$MOCK_DOWNLOADS_DIR/exported-prompts"
     
-    run "$TEST_TEMP_DIR/test_export_prompt_library.sh"
+    run bash "$TEST_TEMP_DIR/test_export_prompt_library.sh"
     
     assert_success
     
@@ -93,7 +94,7 @@ teardown() {
 }
 
 @test "displays informative messages during export process" {
-    run "$TEST_TEMP_DIR/test_export_prompt_library.sh"
+    run bash "$TEST_TEMP_DIR/test_export_prompt_library.sh"
     
     assert_success
     
@@ -106,7 +107,7 @@ teardown() {
 }
 
 @test "uses correct find command with exec cp" {
-    run "$TEST_TEMP_DIR/test_export_prompt_library.sh"
+    run bash "$TEST_TEMP_DIR/test_export_prompt_library.sh"
     
     assert_success
     
@@ -116,10 +117,10 @@ teardown() {
 
 @test "handles empty source directory" {
     # Remove all files from source directory but keep the directory
-    rm -f "$MOCK_PROMPT_LIBRARY_SOURCE"/*
+    rm -rf "$MOCK_PROMPT_LIBRARY_SOURCE"/*
     rm -rf "$MOCK_PROMPT_LIBRARY_SOURCE"/subdir
     
-    run "$TEST_TEMP_DIR/test_export_prompt_library.sh"
+    run bash "$TEST_TEMP_DIR/test_export_prompt_library.sh"
     
     assert_success
     assert_output --partial "✅ Successfully exported prompt library entries"
@@ -131,14 +132,14 @@ teardown() {
 @test "exits with error code 1 when source doesn't exist" {
     rm -rf "$MOCK_PROMPT_LIBRARY_SOURCE"
     
-    run "$TEST_TEMP_DIR/test_export_prompt_library.sh"
+    run bash "$TEST_TEMP_DIR/test_export_prompt_library.sh"
     
     assert_failure
     [ "$status" -eq 1 ]
 }
 
 @test "checks source directory before attempting export" {
-    run "$TEST_TEMP_DIR/test_export_prompt_library.sh"
+    run bash "$TEST_TEMP_DIR/test_export_prompt_library.sh"
     
     assert_success
     
@@ -152,7 +153,7 @@ teardown() {
     # Create a file with spaces in the name
     echo "Spaced file content" > "$MOCK_PROMPT_LIBRARY_SOURCE/file with spaces.txt"
     
-    run "$TEST_TEMP_DIR/test_export_prompt_library.sh"
+    run bash "$TEST_TEMP_DIR/test_export_prompt_library.sh"
     
     assert_success
     
@@ -166,7 +167,7 @@ teardown() {
     echo "Special content" > "$MOCK_PROMPT_LIBRARY_SOURCE/file-with-dashes.txt"
     echo "Underscore content" > "$MOCK_PROMPT_LIBRARY_SOURCE/file_with_underscores.txt"
     
-    run "$TEST_TEMP_DIR/test_export_prompt_library.sh"
+    run bash "$TEST_TEMP_DIR/test_export_prompt_library.sh"
     
     assert_success
     
@@ -176,7 +177,7 @@ teardown() {
 }
 
 @test "uses absolute paths for source and destination" {
-    run "$TEST_TEMP_DIR/test_export_prompt_library.sh"
+    run bash "$TEST_TEMP_DIR/test_export_prompt_library.sh"
     
     assert_success
     
@@ -190,7 +191,7 @@ teardown() {
 }
 
 @test "reports success with emoji and descriptive message" {
-    run "$TEST_TEMP_DIR/test_export_prompt_library.sh"
+    run bash "$TEST_TEMP_DIR/test_export_prompt_library.sh"
     
     assert_success
     
