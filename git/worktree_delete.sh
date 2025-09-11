@@ -7,7 +7,7 @@
 # git worktree list returns a string
 worktreeListString=$(git worktree list)
 
-# git for-each-ref returns an array of all the refs, then we filter out master
+# git for-each-ref returns an array of all the refs, then we filter out master and main
 refArray=($(git for-each-ref  --format="%(refname:short)" refs/heads/ | grep -v "^master$" | grep -v "^main$"))
 refArrayLength=${#refArray[@]}
 
@@ -47,11 +47,19 @@ else
             git worktree remove $refArray[$treeIndex] &&
             git branch -D $refArray[$treeIndex] &&
 
-            printf "\nUpdating master branch...\n\n" &&
-
-            cd master && git pull && cd ../ &&
-
-            printf "\nmaster branch updated\n\nWorktree list:\n" &&
+            # Find master/main worktree dynamically
+            master_worktree_info=$(git worktree list | grep -E '\[(master|main)\]$')
+            
+            if [ -n "$master_worktree_info" ]; then
+                master_path=$(echo "$master_worktree_info" | awk '{print $1}')
+                master_branch=$(echo "$master_worktree_info" | sed -n 's/.*\[\(.*\)\]$/\1/p')
+                
+                printf "\nUpdating $master_branch branch...\n\n" &&
+                cd "$master_path" && git pull && cd - &&
+                printf "\n$master_branch branch updated\n\nWorktree list:\n" &&
+            else
+                printf "\nWarning: Could not locate master/main worktree, skipping branch update\n\nWorktree list:\n" &&
+            fi
             
             DIRNAME=$(dirname "$0") &&
             $DIRNAME/get_list_of_worktrees.sh

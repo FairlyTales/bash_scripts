@@ -6,8 +6,9 @@ setup() {
     create_test_repo
     setup_all_mocks
     create_fake_remote
-    # Create a master worktree directory to simulate the expected directory structure
-    mkdir -p "$TEST_REPO_DIR/../master"
+    # Create a master worktree using git worktree add to simulate realistic structure
+    cd "$TEST_REPO_DIR"
+    git worktree add "../test-project-master" master 2>/dev/null || true
 }
 
 teardown() {
@@ -93,7 +94,8 @@ teardown() {
     [ $status -eq 0 ] || [ $status -eq 1 ]
     
     if [ $status -eq 0 ]; then
-        assert_output --partial "Updating master branch..."
+        # Should mention updating either master or main branch
+        assert_output --regexp "Updating (master|main) branch..."
         # Verify git pull was attempted
         assert_mock_called_with "$TEST_TEMP_DIR/git_calls.log" "git pull"
     fi
@@ -118,7 +120,8 @@ EOF
     
     # Verify the list was updated (if script succeeded)
     if [ $status -eq 0 ]; then
-        assert_output --partial "master branch updated"
+        # Should mention either master or main branch being updated
+        assert_output --regexp "(master|main) branch updated"
         assert_output --partial "Worktree list:"
     fi
 }
