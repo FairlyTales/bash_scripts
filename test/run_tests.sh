@@ -246,13 +246,15 @@ declare -a test_files=()
 total_test_count=0
 
 # Run git script tests
-if run_test_directory "$ROOT_DIR/git/tests" "Git Script"; then
-    git_result=0
-else
-    git_result=$?
-    total_failed=$((total_failed + 1))
+if [ -d "$ROOT_DIR/git/tests" ]; then
+    if run_test_directory "$ROOT_DIR/git/tests" "Git Script"; then
+        git_result=0
+    else
+        git_result=$?
+        total_failed=$((total_failed + 1))
+    fi
+    total_suites=$((total_suites + 1))
 fi
-total_suites=$((total_suites + 1))
 
 # Run utility script tests (if they exist)
 if [ -d "$ROOT_DIR/utility/tests" ]; then
