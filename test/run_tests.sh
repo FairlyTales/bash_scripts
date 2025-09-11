@@ -66,6 +66,8 @@ stop_spinner() {
 # Cleanup function for spinner
 cleanup_spinner() {
     stop_spinner
+    # Kill any running bats processes to prevent freeze
+    pkill -f "bats.*\.bats" 2>/dev/null || true
     # Additional terminal cleanup for interrupt scenarios
     printf "\033[2K\r"  # Clear entire line and return to start
     printf "\033[0m"    # Reset all formatting
@@ -75,6 +77,7 @@ cleanup_spinner() {
     fi
     tput cnorm          # Ensure cursor is visible
     echo                # Print newline for clean prompt
+    echo -e "${YELLOW}⚠️  Tests run cancelled by user${NC}"
     exit 130            # Standard exit code for SIGINT
 }
 
