@@ -55,15 +55,27 @@ stop_spinner() {
         wait "$SPINNER_PID" 2>/dev/null
         SPINNER_PID=""
     fi
-    printf "\r\033[K" # Clear the current line
-    printf "\n\033[1A\033[K" # Clear the line below and move back up
+    # Clear multiple lines to handle dynamic spinner output
+    printf "\r\033[K"     # Clear current line
+    printf "\033[1B\033[K" # Move down and clear line
+    printf "\033[1A"      # Move back up
+    printf "\033[K"       # Clear current line again
     tput cnorm # Show cursor
 }
 
 # Cleanup function for spinner
 cleanup_spinner() {
     stop_spinner
-    exit
+    # Additional terminal cleanup for interrupt scenarios
+    printf "\033[2K\r"  # Clear entire line and return to start
+    printf "\033[0m"    # Reset all formatting
+    # Only run stty if we're in an interactive terminal
+    if [ -t 0 ]; then
+        stty echo       # Ensure echo is restored
+    fi
+    tput cnorm          # Ensure cursor is visible
+    echo                # Print newline for clean prompt
+    exit 130            # Standard exit code for SIGINT
 }
 
 # Trap to ensure spinner cleanup on interruption
