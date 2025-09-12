@@ -25,7 +25,8 @@ node_modules
 .claude/data
 
 # logs
-logs
+.logs
+.agents
 
 # mcp server configs
 .mcp.*

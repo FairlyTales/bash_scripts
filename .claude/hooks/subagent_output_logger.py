@@ -56,7 +56,7 @@ def log_subagent_output(input_data: dict):
             result = tool_response.get('result', '')
         
         # Create log directories
-        log_dir = Path.cwd() / 'logs' / 'subagents'
+        log_dir = Path.cwd() / '.logs' / 'subagents'
         log_dir.mkdir(parents=True, exist_ok=True)
         
         # Date-based organization
@@ -145,7 +145,7 @@ def log_subagent_output(input_data: dict):
         
     except Exception as e:
         # Log error but don't fail the hook
-        error_log = Path.cwd() / 'logs' / 'hook_errors.log'
+        error_log = Path.cwd() / '.logs' / 'hook_errors.log'
         error_log.parent.mkdir(parents=True, exist_ok=True)
         with open(error_log, 'a', encoding='utf-8') as f:
             f.write(f"[{datetime.now().isoformat()}] subagent_output_logger error: {str(e)}\n")

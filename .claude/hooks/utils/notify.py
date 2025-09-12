@@ -212,7 +212,7 @@ Args:
 """
 def log_notification_event(event_type: str, data: dict, log_dir: Path = None):
     if log_dir is None:
-        log_dir = Path.cwd() / "logs"
+        log_dir = Path.cwd() / ".logs"
     
     log_dir.mkdir(parents=True, exist_ok=True)
     log_file = log_dir / "task_notifications.json"
@@ -250,7 +250,7 @@ Log notification to a visual file that can be monitored.
 """
 def _log_notification(title: str, message: str, notification_type: str):
     try:
-        log_dir = Path.cwd() / "logs"
+        log_dir = Path.cwd() / ".logs"
         log_dir.mkdir(parents=True, exist_ok=True)
         log_file = log_dir / "notifications.log"
         

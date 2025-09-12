@@ -20,10 +20,10 @@ except ImportError:
     pass  # dotenv is optional
 
 
-"""Log status line event to logs directory."""
+"""Log status line event to .logs directory."""
 def log_status_line(input_data, status_line_output, error_message=None):
-    # Ensure logs directory exists
-    log_dir = Path("logs")
+    # Ensure .logs directory exists
+    log_dir = Path(".logs")
     log_dir.mkdir(parents=True, exist_ok=True)
     log_file = log_dir / "status_line.json"
 

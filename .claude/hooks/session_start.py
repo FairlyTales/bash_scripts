@@ -21,10 +21,10 @@ except ImportError:
     pass  # dotenv is optional
 
 
+"""Log session start event to .logs directory."""
 def log_session_start(input_data):
-    """Log session start event to logs directory."""
-    # Ensure logs directory exists
-    log_dir = Path("logs")
+    # Ensure .logs directory exists
+    log_dir = Path(".logs")
     log_dir.mkdir(parents=True, exist_ok=True)
     log_file = log_dir / 'session_start.json'
     
@@ -46,8 +46,8 @@ def log_session_start(input_data):
         json.dump(log_data, f, indent=2)
 
 
+"""Get current git status information."""
 def get_git_status():
-    """Get current git status information."""
     try:
         # Get current branch
         branch_result = subprocess.run(
@@ -76,8 +76,8 @@ def get_git_status():
         return None, None
 
 
+"""Get recent GitHub issues if gh CLI is available."""
 def get_recent_issues():
-    """Get recent GitHub issues if gh CLI is available."""
     try:
         # Check if gh is available
         gh_check = subprocess.run(['which', 'gh'], capture_output=True)
@@ -98,8 +98,8 @@ def get_recent_issues():
     return None
 
 
+"""Load relevant development context based on session source."""
 def load_development_context(source):
-    """Load relevant development context based on session source."""
     context_parts = []
     
     # Add timestamp
@@ -146,9 +146,9 @@ def main():
         # Parse command line arguments
         parser = argparse.ArgumentParser()
         parser.add_argument('--load-context', action='store_true',
-                          help='Load development context at session start')
+                        help='Load development context at session start')
         parser.add_argument('--announce', action='store_true',
-                          help='Announce session start via TTS')
+                        help='Announce session start via TTS')
         args = parser.parse_args()
         
         # Read JSON input from stdin

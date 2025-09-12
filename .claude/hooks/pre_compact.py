@@ -20,10 +20,10 @@ except ImportError:
     pass  # dotenv is optional
 
 
+"""Log pre-compact event to .logs directory."""
 def log_pre_compact(input_data):
-    """Log pre-compact event to logs directory."""
     # Ensure logs directory exists
-    log_dir = Path("logs")
+    log_dir = Path(".logs")
     log_dir.mkdir(parents=True, exist_ok=True)
     log_file = log_dir / 'pre_compact.json'
     
@@ -45,14 +45,14 @@ def log_pre_compact(input_data):
         json.dump(log_data, f, indent=2)
 
 
+"""Create a backup of the transcript before compaction."""
 def backup_transcript(transcript_path, trigger):
-    """Create a backup of the transcript before compaction."""
     try:
         if not os.path.exists(transcript_path):
             return
         
         # Create backup directory
-        backup_dir = Path("logs") / "transcript_backups"
+        backup_dir = Path(".logs") / "transcript_backups"
         backup_dir.mkdir(parents=True, exist_ok=True)
         
         # Generate backup filename with timestamp and trigger type
