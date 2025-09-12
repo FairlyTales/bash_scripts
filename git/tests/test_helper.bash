@@ -433,6 +433,20 @@ case "$1" in
         echo "git $*" >> "$TEST_TEMP_DIR/git_calls.log"
         exit 0
         ;;
+    "branch")
+        echo "git $*" >> "$TEST_TEMP_DIR/git_calls.log"
+        # Allow branch commands to actually work for remote worktree testing
+        exec /usr/bin/git "$@"
+        ;;
+    "worktree")
+        echo "git $*" >> "$TEST_TEMP_DIR/git_calls.log"
+        # Allow worktree commands to actually work for remote worktree testing
+        exec /usr/bin/git "$@"
+        ;;
+    "show-ref")
+        # Allow show-ref to work for branch existence checks
+        exec /usr/bin/git "$@"
+        ;;
     *)
         # Pass through to real git for other commands
         exec /usr/bin/git "$@"

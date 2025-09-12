@@ -187,6 +187,21 @@ teardown() {
     assert_output --partial "Failed to create worktree for branch '$branch_name'"
 }
 
+@test "sets upstream branch correctly" {
+    local branch_name="remote-feature"
+    
+    # Create the remote branch first
+    create_remote_branch "$branch_name"
+    
+    run bash -c "cd $TEST_REPO_DIR && $GIT_SCRIPTS_PATH/worktree_add_remote.sh $branch_name"
+    
+    assert_success
+    
+    # Verify git branch --set-upstream-to was called
+    assert_file_exists "$TEST_TEMP_DIR/git_calls.log"
+    assert_mock_called_with "$TEST_TEMP_DIR/git_calls.log" "git branch --set-upstream-to=origin/$branch_name $branch_name"
+}
+
 @test "handles git fetch failure" {
     local branch_name="test-branch"
     

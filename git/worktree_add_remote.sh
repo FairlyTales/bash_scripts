@@ -21,6 +21,11 @@ git worktree add "$1" "$1" || {
     exit 1
 }
 
+git branch --set-upstream-to=origin/$1 $1 || {
+    printf "Error: Failed to set upstream for branch '%s'\n" "$1" >&2
+    exit 1
+}
+
 cd "$1" || {
     printf "Error: Failed to change to worktree directory '%s'\n" "$1" >&2
     exit 1
