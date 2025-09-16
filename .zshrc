@@ -208,7 +208,7 @@ alias с='code ./' # кириллица
 # Cursor
 alias cr='cursor ./'
 alias ca='cursor-agent'
-alias ск='ca' # кириллица
+alias ск='cr' # кириллица
 
 # Gemini cli
 alias gm="gemini --yolo"
