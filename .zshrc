@@ -107,6 +107,8 @@ alias yti="yarn test:integration"
 alias yta="yarn test:a11y"
 alias ytau="yarn test:ui-a11y"
 
+alias yu="yarn test:unit"
+
 alias esl="yarn eslint"
 alias eslf="yarn eslint --fix"
 
