@@ -40,7 +40,8 @@ else
         if [[ $(echo ${worktreeArray[@]} | fgrep -w $refArray[$treeIndex]) ]]
         then
             printf "\nCleaning $refArray[$treeIndex] branch before deletion...\n\n"
-            cd "../$refArray[$treeIndex]" && git reset --hard HEAD && git clean -fd && cd -
+            originalDir=$(pwd)
+            cd "$originalDir/$refArray[$treeIndex]" && git reset --hard HEAD && git clean -fd && cd "$originalDir"
 
             printf "\nDeleting $refArray[$treeIndex] branch and worktree...\n\n"
 
