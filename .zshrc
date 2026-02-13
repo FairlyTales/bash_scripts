@@ -217,6 +217,7 @@ alias gm="gemini --yolo"
 
 # Claude Code
 alias cl="claude --dangerously-skip-permissions"
+alias сд="cl"
 
 # Claude Code with MCP servers
 alias clf="claude --dangerously-skip-permissions --mcp-config .mcp_configs/.mcp.framelink_figma.json"
