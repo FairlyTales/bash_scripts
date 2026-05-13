@@ -193,6 +193,17 @@ alias cd..="cd ../"
 alias t="touch"
 alias m="mkdir"
 
+# caffeinate - keep the mac awake
+# -d - keep the display awake
+# -t - keep the computer awake for a specified time
+# -i - keep the computer awake when the following command is executed
+alias cf="caffeinate"
+alias cfd="caffeinate -d"
+alias cft="caffeinate -t"
+alias cfi="caffeinate -i"
+alias cfdt="caffeinate -t -d"
+alias cftd="caffeinate -t -d"
+
 # ------------------------------------------------------------------------------------------
 
 
