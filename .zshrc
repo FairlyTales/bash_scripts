@@ -325,6 +325,7 @@ alias gtar="$GIT_SCRIPTS_PATH/worktree_add_remote.sh"
 
 # git stash
 alias gst="git stash"
+alias gstc="git stash push -m"
 alias gstl="git stash list"
 alias gstp="git stash pop"
 alias gsta="git stash apply"
