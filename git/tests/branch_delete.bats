@@ -4,6 +4,7 @@ load test_helper
 
 setup() {
     create_test_repo
+    create_fake_remote
 }
 
 teardown() {
@@ -15,7 +16,7 @@ teardown() {
     run "$GIT_SCRIPTS_PATH/branch_delete.sh" <<< ""
     
     assert_success
-    assert_output --partial "No branches to delete (other than master/main)."
+    assert_output --partial "No branches to delete (other than master)."
 }
 
 @test "lists available branches excluding master/main" {

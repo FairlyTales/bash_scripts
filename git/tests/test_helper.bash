@@ -282,6 +282,12 @@ create_fake_remote() {
     cd "$TEST_REPO_DIR"
     git remote add origin "$remote_dir"
     
+    # Push current branch and set origin/HEAD so scripts can detect the default branch
+    local current_branch
+    current_branch=$(/usr/bin/git branch --show-current)
+    /usr/bin/git push -u origin "$current_branch" 2>/dev/null
+    /usr/bin/git symbolic-ref "refs/remotes/origin/HEAD" "refs/remotes/origin/$current_branch" 2>/dev/null
+    
     echo "$remote_dir"
 }
 

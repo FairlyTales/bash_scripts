@@ -1,12 +1,19 @@
 #!/usr/bin/env zsh
 
-# List all local branches except master and main
-branchArray=($(git for-each-ref --format='%(refname:short)' refs/heads/ | grep -vE '^(master|main)$'))
+# Detect the default branch from the remote HEAD
+default_branch=$(git symbolic-ref refs/remotes/origin/HEAD 2>/dev/null | sed 's|refs/remotes/origin/||')
+if [ -z "$default_branch" ]; then
+    git remote set-head origin --auto &>/dev/null
+    default_branch=$(git symbolic-ref refs/remotes/origin/HEAD 2>/dev/null | sed 's|refs/remotes/origin/||')
+fi
+
+# List all local branches except the default branch
+branchArray=($(git for-each-ref --format='%(refname:short)' refs/heads/ | grep -v "^${default_branch}$"))
 branchArrayLength=${#branchArray[@]}
 
 if [ $branchArrayLength -eq 0 ]
 then
-    printf "\nNo branches to delete (other than master/main).\n\n"
+    printf "\nNo branches to delete (other than $default_branch).\n\n"
     exit 0
 fi
 

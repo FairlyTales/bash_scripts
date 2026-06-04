@@ -4,6 +4,7 @@ load test_helper
 
 setup() {
     create_test_repo
+    create_fake_remote
 }
 
 teardown() {

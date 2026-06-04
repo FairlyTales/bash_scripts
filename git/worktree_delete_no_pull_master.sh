@@ -4,11 +4,18 @@
 # enter an index to delete worktree and corresponding branch
 # then delete worktree and branch, then update master branch
 
+# Detect the default branch from the remote HEAD
+default_branch=$(git symbolic-ref refs/remotes/origin/HEAD 2>/dev/null | sed 's|refs/remotes/origin/||')
+if [ -z "$default_branch" ]; then
+    git remote set-head origin --auto &>/dev/null
+    default_branch=$(git symbolic-ref refs/remotes/origin/HEAD 2>/dev/null | sed 's|refs/remotes/origin/||')
+fi
+
 # git worktree list returns a string
 worktreeListString=$(git worktree list)
 
-# git for-each-ref returns an array of all the refs, then we filter out master
-refArray=($(git for-each-ref  --format="%(refname:short)" refs/heads/ | grep -v "^master$" | grep -v "^main$"))
+# git for-each-ref returns an array of all the refs, then we filter out the default branch
+refArray=($(git for-each-ref  --format="%(refname:short)" refs/heads/ | grep -v "^${default_branch}$"))
 refArrayLength=${#refArray[@]}
 
 worktreeArray=()
@@ -19,7 +26,7 @@ printf "\nList fo worktrees:\n\n"
 for (( i=1; i<=${refArrayLength}; i++ ));
 do
     # we display only refs with names present in the worktree list string
-    if [[ $worktreeListString == *$refArray[i]* ]]
+    if [[ $worktreeListString == *"[$refArray[i]]"* ]]
     then
         worktreeArray+=("$refArray[i]")
         printf "[$i] $refArray[i]\n"

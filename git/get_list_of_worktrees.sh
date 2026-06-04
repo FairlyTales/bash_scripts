@@ -1,10 +1,17 @@
 #!/usr/bin/env zsh
 
+# Detect the default branch from the remote HEAD
+default_branch=$(git symbolic-ref refs/remotes/origin/HEAD 2>/dev/null | sed 's|refs/remotes/origin/||')
+if [ -z "$default_branch" ]; then
+    git remote set-head origin --auto &>/dev/null
+    default_branch=$(git symbolic-ref refs/remotes/origin/HEAD 2>/dev/null | sed 's|refs/remotes/origin/||')
+fi
+
 # git worktree list returns a string
 worktreeList=$(git worktree list)
 
-# git for-each-ref returns an array of all the refs, then we filter out master
-refArray=($(git for-each-ref  --format="%(refname:short)" refs/heads/ | grep -v "^master$" | grep -v "^main$"))
+# git for-each-ref returns an array of all the refs, then we filter out the default branch
+refArray=($(git for-each-ref  --format="%(refname:short)" refs/heads/ | grep -v "^${default_branch}$"))
 refArrayLength=${#refArray[@]}
 
 isAnyTreePresent=
@@ -15,12 +22,8 @@ printf "\n"
 for (( i=1; i<=${refArrayLength}; i++ ));
 do
 
-# ЭТОТ ИФ ПРОВЕРЯЕТ НАЛИЧИЕ СТРОКИ В СТРОКЕ, А НЕ ЕЁ ПОЛНОЕ СООТВЕТСТВИЕ, ПОЭТОМУ
-# ЕСЛИ ЕСТЬ ВЕТКА "master", ТО ОНА БУДЕТ НАЙДЕНА В ДЕРЕВЕ "master1"
-# НАДО БЫ ЗАМЕНИТЬ НА ПОЛНОЕ СООТВЕТСТВИЕ
-
     # we display only refs with names present in the worktree list string
-    if [[ $worktreeList == *$refArray[i]* ]]
+    if [[ $worktreeList == *"[$refArray[i]]"* ]]
     then
         printf "$refArray[i]\n"
         isAnyTreePresent=true
