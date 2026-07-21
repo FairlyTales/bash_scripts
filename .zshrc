@@ -206,6 +206,15 @@ alias cfi="caffeinate -i"
 alias cfdt="caffeinate -t -d"
 alias cftd="caffeinate -t -d"
 
+# ImageMagick image converter
+alias ig45b="mkdir -p out_45b && magick mogrify -path out_45b -resize 1080x1350 -background black -gravity center -extent 1080x1350 -quality 100 *.jpg"
+alias ig16b="mkdir -p out_16b && magick mogrify -path out_16b -resize 1080x566 -background black -gravity center -extent 1080x566 -quality 100 *.jpg"
+alias ig45w="mkdir -p out_45w && magick mogrify -path out_45w -resize 1080x1350 -background white -gravity center -extent 1080x1350 -quality 100 *.jpg"
+alias ig16w="mkdir -p out_16w && magick mogrify -path out_16w -resize 1080x566 -background white -gravity center -extent 1080x566 -quality 100 *.jpg"
+alias ig45="ig45w"
+alias ig16="ig16w"
+
+
 # ------------------------------------------------------------------------------------------
 
 
